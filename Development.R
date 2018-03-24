@@ -7,10 +7,11 @@ getwd()
 setwd("/Users/kalendavison/Desktop/Applied Statistical Programming")
 vote_data = read.delim("votingdata.dat")
 mean(vote_data$rvote, na.rm = TRUE)
-output = lm(rvote ~ eth, data = vote_data)
-output # y=.62695-.09266x  
 
+output = lm(rvote ~ eth + stt, data = vote_data)
+output 
 
+#########
 
 # Create an rbf kernel which acts on some variable named temperature
 k1 <- rbf('temperature')
@@ -46,8 +47,6 @@ points(y ~ x, data = df)
 
 gp(formula = )
 
-# <<<<<<< HEAD
-
 View(vote_data)
 summary(vote_data$stt)
 
@@ -62,9 +61,15 @@ View(dummies)
 
 vote_data<-cbind(vote_data, dummies)
 
-summary(vote_data$state.f30)
+summary(vote_data$state.f25)
 
-votedata30<-subset(vote_data, vote_data$state.f30==1)
-View(votedata30)
-=======
->>>>>>> e283a5a87ac3892b56a9e77f97b906609ec0049c
+votedata25<-subset(vote_data, vote_data$state.f25==1)
+View(votedata25)
+
+mean(votedata25$rvote[votedata25$eth == 1], na.rm = TRUE) #white mean republican vote proportion
+mean(votedata25$rvote[votedata25$eth == 2], na.rm = TRUE) #black
+mean(votedata25$rvote[votedata25$eth == 3], na.rm = TRUE) #asian/hispanic
+mean(votedata25$rvote[votedata25$eth == 4], na.rm = TRUE) #asian/hispanic
+
+output = lm(rvote ~ eth, data = votedata25) #we need to make dummy variables for ethnicity to isolate its effect
+
