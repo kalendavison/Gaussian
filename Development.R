@@ -46,7 +46,7 @@ points(y ~ x, data = df)
 
 gp(formula = )
 
-<<<<<<< HEAD
+# <<<<<<< HEAD
 
 View(vote_data)
 summary(vote_data$stt)
