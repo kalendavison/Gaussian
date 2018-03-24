@@ -63,8 +63,15 @@ View(dummies)
 
 vote_data<-cbind(vote_data, dummies)
 
-summary(vote_data$state.f30)
+summary(vote_data$state.f25)
 
-votedata30<-subset(vote_data, vote_data$state.f30==1)
-View(votedata30)
+votedata25<-subset(vote_data, vote_data$state.f25==1)
+View(votedata25)
+
+mean(votedata25$rvote[votedata25$eth == 1], na.rm = TRUE) #white mean republican vote proportion
+mean(votedata25$rvote[votedata25$eth == 2], na.rm = TRUE) #black
+mean(votedata25$rvote[votedata25$eth == 3], na.rm = TRUE) #asian/hispanic
+mean(votedata25$rvote[votedata25$eth == 4], na.rm = TRUE) #asian/hispanic
+
+output = lm(rvote ~ eth, data = votedata25) #we need to make dummy variables for ethnicity to isolate its effect
 
