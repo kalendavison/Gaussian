@@ -7,8 +7,9 @@ getwd()
 setwd("/Users/kalendavison/Desktop/Applied Statistical Programming")
 vote_data = read.delim("votingdata.dat")
 mean(vote_data$rvote, na.rm = TRUE)
-output = lm(rvote ~ eth, data = vote_data)
-output # y=.62695-.09266x  
+
+output = lm(rvote ~ eth + stt, data = vote_data)
+output 
 
 
 
