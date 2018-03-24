@@ -77,3 +77,7 @@ mean(votedata25$rvote[votedata25$eth == 4], na.rm = TRUE) #asian/hispanic
 
 output = lm(rvote ~ eth, data = votedata25) #we need to make dummy variables for ethnicity to isolate its effect
 
+kernels = function(x, prime, sigma){ #kernels function to inputted in GP
+  out = exp(-((abs(x-prime))^2)/(2(sigma)^2))
+  return(out)
+}
