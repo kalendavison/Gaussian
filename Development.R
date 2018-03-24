@@ -47,3 +47,25 @@ points(y ~ x, data = df)
 
 gp(formula = )
 
+<<<<<<< HEAD
+
+View(vote_data)
+summary(vote_data$stt)
+
+state.f<-factor(vote_data$stt)
+dummies<-model.matrix(~state.f)
+View(dummies)
+
+#vote_data$state.f1<-
+
+#vote_data$state.f2
+
+
+vote_data<-cbind(vote_data, dummies)
+
+summary(vote_data$state.f30)
+
+votedata30<-subset(vote_data, vote_data$state.f30==1)
+View(votedata30)
+=======
+>>>>>>> e283a5a87ac3892b56a9e77f97b906609ec0049c
