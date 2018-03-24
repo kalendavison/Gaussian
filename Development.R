@@ -10,6 +10,8 @@ mean(vote_data$rvote, na.rm = TRUE)
 output = lm(rvote ~ eth, data = vote_data)
 output # y=.62695-.09266x  
 
+
+
 # Create an rbf kernel which acts on some variable named temperature
 k1 <- rbf('temperature')
 # look at the parameters
@@ -44,6 +46,7 @@ points(y ~ x, data = df)
 
 gp(formula = )
 
+<<<<<<< HEAD
 
 View(vote_data)
 summary(vote_data$stt)
@@ -63,3 +66,5 @@ summary(vote_data$state.f30)
 
 votedata30<-subset(vote_data, vote_data$state.f30==1)
 View(votedata30)
+=======
+>>>>>>> e283a5a87ac3892b56a9e77f97b906609ec0049c
