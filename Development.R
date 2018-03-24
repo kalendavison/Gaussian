@@ -10,6 +10,8 @@ mean(vote_data$rvote, na.rm = TRUE)
 output = lm(rvote ~ eth, data = vote_data)
 output # y=.62695-.09266x  
 
+
+
 # Create an rbf kernel which acts on some variable named temperature
 k1 <- rbf('temperature')
 # look at the parameters
@@ -43,3 +45,4 @@ points(y ~ x, data = df)
 # just set 'sd = TRUE' when predicting
 
 gp(formula = )
+
