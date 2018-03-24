@@ -43,3 +43,23 @@ points(y ~ x, data = df)
 # just set 'sd = TRUE' when predicting
 
 gp(formula = )
+
+
+View(vote_data)
+summary(vote_data$stt)
+
+state.f<-factor(vote_data$stt)
+dummies<-model.matrix(~state.f)
+View(dummies)
+
+#vote_data$state.f1<-
+
+#vote_data$state.f2
+
+
+vote_data<-cbind(vote_data, dummies)
+
+summary(vote_data$state.f30)
+
+votedata30<-subset(vote_data, vote_data$state.f30==1)
+View(votedata30)
