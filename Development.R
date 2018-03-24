@@ -60,6 +60,7 @@ View(dummies)
 
 #vote_data$state.f2
 
+vote_data$white<-ifelse(vote_data$eth==1, c(1), c(0))
 vote_data$black<-ifelse(vote_data$eth==2, c(1), c(0))
 vote_data$hisp<-ifelse(vote_data$eth==3, c(1), c(0))
 vote_data$api<-ifelse(vote_data$eth==4, c(1), c(0))
