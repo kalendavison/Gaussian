@@ -45,14 +45,13 @@ points(y ~ x, data = df)
 # note you can get the posterior variance (prediction uncertainty) too,
 # just set 'sd = TRUE' when predicting
 
-gp(formula = )
 
+vote_data = na.exclude(vote_data) #cleaning of all missing data
 View(vote_data)
 summary(vote_data$stt)
 
 state.f<-factor(vote_data$stt)
 dummies<-model.matrix(~state.f)
-View(dummies)
 
 #vote_data$state.f1<-
 
@@ -91,20 +90,23 @@ kernels = function(x, prime, sigma){ #kernels function to inputted in GP
   return(out)
 }
 ?rbf
-vote.df<-as.data.frame(votedata25)
-vote.df.reduced<-vote.df[,c("rvote", "white")]
-vote.df.reduced<-na.exclude(vote.df.reduced)
 
 
-output<-gp(rvote~rbf("white") , data = vote.df.reduced , family = binomial)
+vote.df25<-as.data.frame(votedata25)
+vote.df25.reduced<-vote.df[,c("rvote", "white")]
+vote.df25.reduced<-na.exclude(vote.df.reduced)
 
-plot(output$posterior$components$a, vote.df.reduced$rvote)
+
+
+output<-gp(rvote~rbf("white") , data = vote.df25.reduced , family = binomial)
+
+plot(output$posterior$components$a, vote.df25.reduced$rvote)
 
 ?gp
 ?
 
 my.prediction<-predict(output, vote.df, type="response")
-plot(my.prediction, vote.df$white)
-vote.df$rvote
+plot(my.prediction, vote.df25$white)
+vote.df25$rvote
 
 as.data.frame(votedata25$rvote)
