@@ -63,6 +63,13 @@ vote_data$black<-ifelse(vote_data$eth==2, c(1), c(0))
 vote_data$hisp<-ifelse(vote_data$eth==3, c(1), c(0))
 vote_data$api<-ifelse(vote_data$eth==4, c(1), c(0))
 
+
+votedata25$white<-ifelse(votedata25$eth==1, c(1), c(0))
+votedata25$black<-ifelse(votedata25$eth==2, c(1), c(0))
+votedata25$hisp<-ifelse(votedata25$eth==3, c(1), c(0))
+votedata25$api<-ifelse(votedata25$eth==4, c(1), c(0))
+
+
 vote_data<-cbind(vote_data, dummies)
 
 summary(vote_data$state.f25)
@@ -76,8 +83,28 @@ mean(votedata25$rvote[votedata25$eth == 3], na.rm = TRUE) #asian/hispanic
 mean(votedata25$rvote[votedata25$eth == 4], na.rm = TRUE) #asian/hispanic
 
 output = lm(rvote ~ eth, data = votedata25) #we need to make dummy variables for ethnicity to isolate its effect
+output = lm(rvote ~ white, data = votedata25)
+output
 
 kernels = function(x, prime, sigma){ #kernels function to inputted in GP
   out = exp(-((abs(x-prime))^2)/(2*(sigma)^2))
   return(out)
 }
+?rbf
+vote.df<-as.data.frame(votedata25)
+vote.df.reduced<-vote.df[,c("rvote", "white")]
+vote.df.reduced<-na.exclude(vote.df.reduced)
+
+
+output<-gp(rvote~rbf("white") , data = vote.df.reduced , family = binomial)
+
+plot(output$posterior$components$a, vote.df.reduced$rvote)
+
+?gp
+?
+
+my.prediction<-predict(output, vote.df, type="response")
+plot(my.prediction, vote.df$white)
+vote.df$rvote
+
+as.data.frame(votedata25$rvote)
