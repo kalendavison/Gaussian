@@ -8,7 +8,11 @@ install.packages('lme4')
 
 getwd()
 setwd("/Users/kalendavison/Desktop/Applied Statistical Programming")
+<<<<<<< HEAD
+#setwd("/Users/isdav/Documents/GitHub/Gaussian")
+=======
 setwd("/Users/noahbardash/Documents/GitHub/Gaussian")
+>>>>>>> b80cc08482c82316ef5371ff65ace4ddf1358724
 vote_data = read.delim("votingdata.dat")
 mean(vote_data$rvote, na.rm = TRUE)
 
