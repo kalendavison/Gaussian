@@ -45,14 +45,12 @@ points(y ~ x, data = df)
 # note you can get the posterior variance (prediction uncertainty) too,
 # just set 'sd = TRUE' when predicting
 
-gp(formula = )
 
 View(vote_data)
 summary(vote_data$stt)
 
 state.f<-factor(vote_data$stt)
 dummies<-model.matrix(~state.f)
-View(dummies)
 
 #vote_data$state.f1<-
 
@@ -83,4 +81,7 @@ kernels = function(x, prime, sigma){ #kernels function to inputted in GP
   out = exp(-((abs(x-prime))^2)/(2*(sigma)^2))
   return(out)
 }
+<<<<<<< HEAD
 kernels(1:10,rep(2,10),3)
+=======
+>>>>>>> 6a0d0869b1da1def66c2e13733bd86109206aae5
