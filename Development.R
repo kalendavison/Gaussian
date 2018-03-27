@@ -39,22 +39,9 @@ output #being white has a stronger affect on voting republican
 
 vote.df25<-as.data.frame(votedata25)
 vote.df25.reduced<-vote.df25[,c("rvote", "white")]
-
-head(vote.df25.reduced)
-rbf(vote.df25.reduced$white)
-
 output<-gp(formula = rvote~rbf("white"), data = vote.df25.reduced, family = binomial)
-
-summary(output)
-dim(vote.df25.reduced)
-
-
 plot(output$posterior$components$a, vote.df25.reduced$rvote)
-
 
 my.prediction<-predict(output, vote.df25, type="response")
 plot(my.prediction, vote.df25$white)
-vote.df25$rvote
-
-as.data.frame(votedata25$rvote)
 
