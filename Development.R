@@ -16,10 +16,6 @@ summary(vote_data$stt)
 state.f<-factor(vote_data$stt)
 dummies<-model.matrix(~state.f)
 
-#vote_data$state.f1<-
-
-#vote_data$state.f2
-
 vote_data$white<-ifelse(vote_data$eth==1, c(1), c(0))
 vote_data$black<-ifelse(vote_data$eth==2, c(1), c(0))
 vote_data$hisp<-ifelse(vote_data$eth==3, c(1), c(0))
@@ -40,27 +36,11 @@ mean(votedata5$rvote[votedata5$eth == 4], na.rm = TRUE) #asian/hispanic
 output = lm(rvote ~ eth, data = votedata5) #we need to make dummy variables for ethnicity to isolate its effect
 output = lm(rvote ~ white, data = votedata5)
 output
-
-<<<<<<< HEAD
-=======
-?rbf
-
-kernels = function(x, prime, sigma){ #kernels function to inputted in GP
-  out = exp(-((abs(x-prime))^2)/(2*(sigma)^2))
-  return(out)
-}
-<<<<<<< HEAD
-kernels(1:10,rep(2,10),3)
-=======
-?rbf
->>>>>>> 6a60ad685dcb664e2bfcb6bd0b9bf6c5a06228f7
-
+output = lm(rvote ~ white + sex, data = votedata5)
+output #being white has a stronger affect on voting republican
 
 vote.df5<-as.data.frame(votedata5)
-vote.df5.reduced<-vote.df[,c("rvote", "white")]
-vote.df5.reduced<-na.exclude(vote.df.reduced)
-
-
+vote.df5.reduced<-vote.df5[,c("rvote", "white")]
 
 output<-gp(rvote~rbf("white") , data = vote.df5.reduced , family = binomial)
 
@@ -71,9 +51,5 @@ my.prediction<-predict(output, vote.df5, type="response")
 plot(my.prediction, vote.df5$white)
 vote.df5$rvote
 
-<<<<<<< HEAD
 as.data.frame(votedata5$rvote)
-=======
-as.data.frame(votedata25$rvote)
->>>>>>> 6a0d0869b1da1def66c2e13733bd86109206aae5
->>>>>>> 6a60ad685dcb664e2bfcb6bd0b9bf6c5a06228f7
+
