@@ -42,7 +42,7 @@ output #being white has a stronger affect on voting republican
 vote.df5<-as.data.frame(votedata5)
 vote.df5.reduced<-vote.df5[,c("rvote", "white")]
 
-output<-gp(rvote~rbf("white") , data = vote.df5.reduced , family = binomial)
+output<-gp(formula = rvote~rbf("white"), data = vote.df5.reduced , family = binomial)
 
 plot(output$posterior$components$a, vote.df5.reduced$rvote)
 
