@@ -1,5 +1,6 @@
 rm(list = ls())
 
+#setting up
 library(devtools)
 install_github('goldingn/gpe')
 install.packages("arm")
@@ -14,7 +15,8 @@ getwd()
 setwd("/Users/kalendavison/Desktop/Applied Statistical Programming")
 setwd("/Users/isdav/Documents/GitHub/Gaussian")
 setwd("/Users/noahbardash/Documents/GitHub/Gaussian")
-vote_data = read.delim("votingdata.dat")
+vote_data = read.delim("votingdata.dat") #read in dataset
+
 
 
 ### recoding dataset for analysis
