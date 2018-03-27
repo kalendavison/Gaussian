@@ -41,6 +41,19 @@ output = lm(rvote ~ eth, data = votedata5) #we need to make dummy variables for 
 output = lm(rvote ~ white, data = votedata5)
 output
 
+<<<<<<< HEAD
+=======
+?rbf
+
+kernels = function(x, prime, sigma){ #kernels function to inputted in GP
+  out = exp(-((abs(x-prime))^2)/(2*(sigma)^2))
+  return(out)
+}
+<<<<<<< HEAD
+kernels(1:10,rep(2,10),3)
+=======
+?rbf
+>>>>>>> 6a60ad685dcb664e2bfcb6bd0b9bf6c5a06228f7
 
 
 vote.df5<-as.data.frame(votedata5)
@@ -58,4 +71,9 @@ my.prediction<-predict(output, vote.df5, type="response")
 plot(my.prediction, vote.df5$white)
 vote.df5$rvote
 
+<<<<<<< HEAD
 as.data.frame(votedata5$rvote)
+=======
+as.data.frame(votedata25$rvote)
+>>>>>>> 6a0d0869b1da1def66c2e13733bd86109206aae5
+>>>>>>> 6a60ad685dcb664e2bfcb6bd0b9bf6c5a06228f7
