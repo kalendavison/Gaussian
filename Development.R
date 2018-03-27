@@ -5,6 +5,7 @@ library(gpe)
 
 getwd()
 setwd("/Users/kalendavison/Desktop/Applied Statistical Programming")
+#setwd("/Users/isdav/Documents/GitHub/Gaussian")
 vote_data = read.delim("votingdata.dat")
 mean(vote_data$rvote, na.rm = TRUE)
 
