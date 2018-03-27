@@ -1,5 +1,8 @@
 library(devtools)
 install_github('goldingn/gpe')
+install.packages("arm")
+library(arm)
+?lmer
 library(gpe)
 ?gp
 
@@ -38,10 +41,11 @@ output = lm(rvote ~ white + sex, data = votedata25)
 output #being white has a stronger affect on voting republican
 
 vote.df25<-as.data.frame(votedata25)
-vote.df25.reduced<-vote.df25[,c("rvote", "white")]
-output<-gp(formula = rvote~rbf("white"), data = vote.df25.reduced, family = binomial)
-plot(output$posterior$components$a, vote.df25.reduced$rvote)
-
+vote.df25.reduced<-vote.df25[,c("rvote", "white", "sex")]
+output<-gp(formula = rvote~rbf(c("white", "sex")), data = vote.df25.reduced, family = binomial) 
 my.prediction<-predict(output, vote.df25, type="response")
+my.prediction
+plot(output$posterior$components$a, vote.df25.reduced$rvote)
 plot(my.prediction, vote.df25$white)
+
 
