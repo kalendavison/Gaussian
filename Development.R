@@ -11,11 +11,8 @@ install.packages('lme4')
 
 getwd()
 setwd("/Users/kalendavison/Desktop/Applied Statistical Programming")
-<<<<<<< HEAD
-#setwd("/Users/isdav/Documents/GitHub/Gaussian")
-=======
+setwd("/Users/isdav/Documents/GitHub/Gaussian")
 setwd("/Users/noahbardash/Documents/GitHub/Gaussian")
->>>>>>> b80cc08482c82316ef5371ff65ace4ddf1358724
 vote_data = read.delim("votingdata.dat")
 mean(vote_data$rvote, na.rm = TRUE)
 
@@ -54,22 +51,12 @@ output = lm(rvote ~ white + sex, data = votedata25)
 output #being white has a stronger affect on voting republican
 
 vote.df25<-as.data.frame(votedata25)
-<<<<<<< HEAD
 vote.df25.reduced<-vote.df25[,c("rvote", "white", "sex")]
 output<-gp(formula = rvote~rbf(c("white", "sex")), data = vote.df25.reduced, family = binomial) 
-=======
-head(vote.df25)
-View(vote.df25)
 vote.df25.reduced<-vote.df25[,c("rvote", "white", "sex")]
-head(vote.df25.reduced)
 output<-gp(formula = rvote~rbf("white"), data = vote.df25.reduced, family = binomial)
 plot(output$posterior$components$a, vote.df25.reduced$rvote)
-?rbf
 
-test <- expand.grid(vote.df25.reduced$white, vote.df25.reduced$male)
-test
-
->>>>>>> 710b762348e6e4cdeea302219f17f6ba13d66f0c
 my.prediction<-predict(output, vote.df25, type="response")
 my.prediction
 plot(output$posterior$components$a, vote.df25.reduced$rvote)
