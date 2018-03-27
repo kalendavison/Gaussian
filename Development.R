@@ -8,43 +8,6 @@ setwd("/Users/kalendavison/Desktop/Applied Statistical Programming")
 vote_data = read.delim("votingdata.dat")
 mean(vote_data$rvote, na.rm = TRUE)
 
-output = lm(rvote ~ eth + stt, data = vote_data)
-output 
-
-#########
-
-# Create an rbf kernel which acts on some variable named temperature
-k1 <- rbf('temperature')
-# look at the parameters
-summary(k1)
-# plot covariance
-plot(k1)
-# look at some GPs drawn from this kernel
-demoKernel(k1)
-
-# make a fake 'true' function
-f <- function(x) 2 * sin(x)
-
-# make a fake dataset
-x <- sort(runif(100, -2, 2))
-y <- rpois(100, exp(f(x)))
-df <- data.frame(y, x)
-
-# fit a Poisson GP model with an rbf kernel
-m <- gp(y ~ rbf('x'), data = df, family = poisson)
-
-# predict from it
-pred_df <- data.frame(x = seq(min(df$x), max(df$x), len = 500))
-lambda <- predict(m, pred_df, type = 'response')
-
-# plot the predicted rate parameter, the true model and the data
-plot(lambda ~ pred_df$x, type = 'l', lwd = 2, ylim = range(y))
-lines(exp(f(pred_df$x)) ~ pred_df$x, lty = 2)
-points(y ~ x, data = df)
-
-# note you can get the posterior variance (prediction uncertainty) too,
-# just set 'sd = TRUE' when predicting
-
 
 vote_data = na.exclude(vote_data) #cleaning of all missing data
 View(vote_data)
@@ -62,51 +25,37 @@ vote_data$black<-ifelse(vote_data$eth==2, c(1), c(0))
 vote_data$hisp<-ifelse(vote_data$eth==3, c(1), c(0))
 vote_data$api<-ifelse(vote_data$eth==4, c(1), c(0))
 
-
-votedata25$white<-ifelse(votedata25$eth==1, c(1), c(0))
-votedata25$black<-ifelse(votedata25$eth==2, c(1), c(0))
-votedata25$hisp<-ifelse(votedata25$eth==3, c(1), c(0))
-votedata25$api<-ifelse(votedata25$eth==4, c(1), c(0))
-
-
 vote_data<-cbind(vote_data, dummies)
 
-summary(vote_data$state.f25)
+summary(vote_data$state.f5)
 
-votedata25<-subset(vote_data, vote_data$state.f25==1)
-View(votedata25)
+votedata5<-subset(vote_data, vote_data$state.f5==1)
+View(votedata5)
 
-mean(votedata25$rvote[votedata25$eth == 1], na.rm = TRUE) #white mean republican vote proportion
-mean(votedata25$rvote[votedata25$eth == 2], na.rm = TRUE) #black
-mean(votedata25$rvote[votedata25$eth == 3], na.rm = TRUE) #asian/hispanic
-mean(votedata25$rvote[votedata25$eth == 4], na.rm = TRUE) #asian/hispanic
+mean(votedata5$rvote[votedata5$eth == 1], na.rm = TRUE) #white mean republican vote proportion
+mean(votedata5$rvote[votedata5$eth == 2], na.rm = TRUE) #black
+mean(votedata5$rvote[votedata5$eth == 3], na.rm = TRUE) #asian/hispanic
+mean(votedata5$rvote[votedata5$eth == 4], na.rm = TRUE) #asian/hispanic
 
-output = lm(rvote ~ eth, data = votedata25) #we need to make dummy variables for ethnicity to isolate its effect
-output = lm(rvote ~ white, data = votedata25)
+output = lm(rvote ~ eth, data = votedata5) #we need to make dummy variables for ethnicity to isolate its effect
+output = lm(rvote ~ white, data = votedata5)
 output
 
-kernels = function(x, prime, sigma){ #kernels function to inputted in GP
-  out = exp(-((abs(x-prime))^2)/(2*(sigma)^2))
-  return(out)
-}
-?rbf
 
 
-vote.df25<-as.data.frame(votedata25)
-vote.df25.reduced<-vote.df[,c("rvote", "white")]
-vote.df25.reduced<-na.exclude(vote.df.reduced)
+vote.df5<-as.data.frame(votedata5)
+vote.df5.reduced<-vote.df[,c("rvote", "white")]
+vote.df5.reduced<-na.exclude(vote.df.reduced)
 
 
 
-output<-gp(rvote~rbf("white") , data = vote.df25.reduced , family = binomial)
+output<-gp(rvote~rbf("white") , data = vote.df5.reduced , family = binomial)
 
-plot(output$posterior$components$a, vote.df25.reduced$rvote)
+plot(output$posterior$components$a, vote.df5.reduced$rvote)
 
-?gp
-?
 
-my.prediction<-predict(output, vote.df, type="response")
-plot(my.prediction, vote.df25$white)
-vote.df25$rvote
+my.prediction<-predict(output, vote.df5, type="response")
+plot(my.prediction, vote.df5$white)
+vote.df5$rvote
 
-as.data.frame(votedata25$rvote)
+as.data.frame(votedata5$rvote)
