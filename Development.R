@@ -5,7 +5,11 @@ library(gpe)
 
 getwd()
 setwd("/Users/kalendavison/Desktop/Applied Statistical Programming")
+<<<<<<< HEAD
 #setwd("/Users/isdav/Documents/GitHub/Gaussian")
+=======
+setwd("/Users/noahbardash/Documents/GitHub/Gaussian")
+>>>>>>> b80cc08482c82316ef5371ff65ace4ddf1358724
 vote_data = read.delim("votingdata.dat")
 mean(vote_data$rvote, na.rm = TRUE)
 
@@ -40,22 +44,9 @@ output #being white has a stronger affect on voting republican
 
 vote.df25<-as.data.frame(votedata25)
 vote.df25.reduced<-vote.df25[,c("rvote", "white")]
-
-head(vote.df25.reduced)
-rbf(vote.df25.reduced$white)
-
 output<-gp(formula = rvote~rbf("white"), data = vote.df25.reduced, family = binomial)
-
-summary(output)
-dim(vote.df25.reduced)
-
-
 plot(output$posterior$components$a, vote.df25.reduced$rvote)
-
 
 my.prediction<-predict(output, vote.df25, type="response")
 plot(my.prediction, vote.df25$white)
-vote.df25$rvote
-
-as.data.frame(votedata25$rvote)
 
