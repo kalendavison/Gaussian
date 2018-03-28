@@ -64,4 +64,3 @@ check = glmer(formula = rvote ~ (1|kid) + var1 + var2, data = vote.df25, family 
 display(check) 
 #the functionality of glmer seems to be working but not sure how to interpret, and inputs are prob formatted incorrectly
 #the results suggest that being a woman makes you less likely to vote repub and that being white makes you more likely to vote repub
-
