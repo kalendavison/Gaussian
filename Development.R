@@ -28,9 +28,9 @@ vote_data$white<-ifelse(vote_data$eth==1, c(1), c(0))
 vote_data$black<-ifelse(vote_data$eth==2, c(1), c(0))
 vote_data$hisp<-ifelse(vote_data$eth==3, c(1), c(0))
 vote_data$api<-ifelse(vote_data$eth==4, c(1), c(0))
-vote_data$sex<-ifelse(vote_data$sex==1, c(0), c(1)) #recode sex to 0 1 dummy instead of 1 2
-vote_data$mar<-ifelse(vote_data$mar==1, c(0), c(1)) #recode married to 0 1
-vote_data$kid<-ifelse(vote_data$kid==1, c(0), c(1)) #recode kid to 0 1 
+vote_data$sex<-ifelse(vote_data$sex==1, c(1), c(0)) #recode sex to 0 1 dummy instead of 1 2
+vote_data$mar<-ifelse(vote_data$mar==1, c(1), c(0)) #recode married to 0 1
+vote_data$kid<-ifelse(vote_data$kid==1, c(1), c(0)) #recode kid to 0 1 
 votedata25<-subset(vote_data, vote_data$state.f25==1) #using only 25th state for now
 
 mean(votedata25$rvote[votedata25$eth == 1], na.rm = TRUE) #white mean republican vote proportion
