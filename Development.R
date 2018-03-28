@@ -49,7 +49,7 @@ output #being white has a stronger affect on voting republican
 
 #using gp function to do analysis
 vote.df25<-as.data.frame(votedata25)
-vote.df25.reduced<-vote.df25[,c("rvote", "white", "sex")]
+vote.df25.reduced<-vote.df25[,c("rvote", "white", "sex", "mar", "kid")]
 output<-gp(formula = rvote~rbf(c("white", "sex")), data = vote.df25.reduced, family = binomial) ### compare output of this with lmer output. see pdf on doc for assistance
 my.prediction<-predict(output, vote.df25, type="response")
 table(my.prediction) #there are four possible probabilities of voting republican (associated with white male, nonwhite male, white female, nonwhite female)
@@ -60,8 +60,10 @@ plot(my.prediction, vote.df25$white)
 #working with glmer function
 var1 = as.factor(vote.df25.reduced$white)
 var2 = as.factor(vote.df25.reduced$sex)
-check = glmer(formula = rvote ~ (1|kid) + var1 + var2, data = vote.df25, family = binomial)
+var3 = as.factor(vote.df25.reduced$mar)
+check = glmer(formula = rvote ~ (1|kid) + var1 + var2, data = vote.df25.reduced, family = binomial) #may need more variables (white man...nonwhite woman)
 display(check) 
+plot(check)
 #the functionality of glmer seems to be working but not sure how to interpret, and inputs are prob formatted incorrectly
 #the results suggest that being a woman makes you less likely to vote repub and that being white makes you more likely to vote repub
 
