@@ -63,16 +63,13 @@ table(my.prediction) #there are four possible probabilities of voting republican
 plot(output$posterior$components$a, vote.df25.reduced$rvote)
 plot(my.prediction, vote.df25$white)
 
-<<<<<<< HEAD
+
 output<-gp(formula = rvote~rbf(c("white", "man", "mar", "kid")), data = vote.df25.reduced, family = binomial)
 my.prediction<-predict(output, vote.df25, type="response")
 table(my.prediction) #there are 16 possibilities 
 plot(output$posterior$components$a, vote.df25.reduced$rvote)
 
 
-=======
-?glmer
->>>>>>> b407ed7b049707836f6c1705124f22a1abac0167
 
 #working with glmer function
 var1 = as.factor(vote.df25.reduced$white)
