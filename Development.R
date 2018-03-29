@@ -71,9 +71,14 @@ output #being white has a stronger affect on voting republican
 vote.df25<-as.data.frame(votedata25)
 vote.df25.reduced<-vote.df25[,c("rvote", "white", "man", "mar", "kid")]
 
+# make a pretend data set with one instance of all possible configurations of demographics white male, black male, 
+# feed into predict function, append
+
 output<-gp(formula = rvote~rbf(c("white", "man")), data = vote.df25.reduced, family = binomial) ### compare output of this with lmer output. see pdf on doc for assistance
-my.prediction<-predict(output, vote.df25, type="response")
+my.prediction<-predict(output, vote.df25, type="response") # replace vote.df25 with fake data set made above
+my.prediction <- unique(my.prediction)
 table(my.prediction)
+# put demographic category w/ prediction into a table
 as.data.frame(table(my.prediction)) #there are four possible probabilities of voting republican (associated with white male, nonwhite male, white female, nonwhite female)
 plot(output$posterior$components$a, vote.df25.reduced$rvote)
 
