@@ -61,6 +61,7 @@ vote.df25.reduced<-vote.df25[,c("rvote", "white", "man", "mar", "kid")]
 
 output<-gp(formula = rvote~rbf(c("white", "man")), data = vote.df25.reduced, family = binomial) ### compare output of this with lmer output. see pdf on doc for assistance
 my.prediction<-predict(output, vote.df25, type="response")
+table(my.prediction)
 as.data.frame(table(my.prediction)) #there are four possible probabilities of voting republican (associated with white male, nonwhite male, white female, nonwhite female)
 plot(output$posterior$components$a, vote.df25.reduced$rvote)
 
@@ -93,3 +94,7 @@ plot(check@resp$family$variance)
 
 #the functionality of glmer seems to be working but not sure how to interpret, and inputs are prob formatted incorrectly
 #the results suggest that being a woman makes you less likely to vote repub and that being white makes you more likely to vote repub
+
+#fit the models with all the covariates - want 2 to 3 states, show how predictions do or don't match up
+#extend the code out to the full set
+#race/ethnicity sex state education
