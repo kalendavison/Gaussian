@@ -65,12 +65,11 @@ mean(votedata25$rvote[votedata25$sex == 2], na.rm = TRUE) #female
 output = lm(rvote ~ white, data = votedata25)
 output
 output = lm(rvote ~ white + sex, data = votedata25)
-output #being white has a stronger effect on voting republican
+output #being white has a stronger affect on voting republican
 
-?rbf
 #using gp function to do analysis
 vote.df25<-as.data.frame(votedata25)
-vote.df25.reduced<-vote.df25[,c("rvote", "white", "black", "hisp", "api", "man", "mar", "kid")]
+vote.df25.reduced<-vote.df25[,c("rvote", "white", "man", "mar", "kid")]
 
 output<-gp(formula = rvote~rbf(c("white", "man")), data = vote.df25.reduced, family = binomial) ### compare output of this with lmer output. see pdf on doc for assistance
 my.prediction<-predict(output, vote.df25, type="response")
@@ -79,12 +78,10 @@ as.data.frame(table(my.prediction)) #there are four possible probabilities of vo
 plot(output$posterior$components$a, vote.df25.reduced$rvote)
 
 output<-gp(formula = rvote~rbf(c("man", "white", "mar", "kid")), data = vote.df25.reduced, family = binomial)
-my.prediction <- predict(output, vote.df25, type="response")
-my.prediction <- unique(my.prediction)
+my.prediction<-predict(output, vote.df25, type="response")
 as.data.frame(table(my.prediction)) #there are 16 possibilities 
 plot(output$posterior$components$a, vote.df25.reduced$rvote)
 
-?predict
 
 
 #working with glmer function
@@ -112,7 +109,7 @@ var10 = vote.df25.reduced$bachelors
 var11 = vote.df25.reduced$adv_degree
 
 
-check = glmer(formula = rvote ~ (1|var1) + (1|var2) + (1|var3) + (1|var4) + (1|var5) + (1|var6) 
+check = glmer(formula = rvote ~ (1|var1) + (1|var2) + (1|var3) + (1|var4) + (1|var5)
               + (1|var7) + (1|var8) + (1|var9) + (1|var10) + (1|var11), data = vote.df25.reduced, family = binomial) 
 display(check) 
 
