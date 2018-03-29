@@ -124,3 +124,5 @@ display(check)
 # 2 change output of gp function to just return unique predictor values for each demographic subgroup
 # 3 do gp function for 2 - 3 states, see how predictors hold up in other states - check for similarity
 # 4 glmer: make all of the indicators random effect variables, enter all the variables
+
+# use same strategy with glmer as we do with gp. make a fake dataset for predictions
