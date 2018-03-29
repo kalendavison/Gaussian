@@ -80,7 +80,8 @@ var3 = as.factor(vote.df25.reduced$NWM)
 var4 = as.factor(vote.df25.reduced$NWF)
 check = glmer(formula = rvote ~ (1|kid) + var1 + var3, data = vote.df25.reduced, family = binomial) #may need more variables (white man...nonwhite woman)
 display(check) 
-plot(check)
+plot(check@resp$family$variance) #variance is relatively normally distributed which is good
+
 
 vote.df25.reduced<-vote.df25[,c("rvote", "white", "man", "mar", "kid")]
 var1 = as.factor(vote.df25.reduced$white)
