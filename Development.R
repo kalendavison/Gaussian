@@ -49,7 +49,7 @@ mean(votedata25$rvote[votedata25$sex == 1], na.rm = TRUE) #male republican vote 
 mean(votedata25$rvote[votedata25$sex == 2], na.rm = TRUE) #female
 
 #basic multivariate regression analysis
-output = lm(rvote ~ eth, data = votedata25) #we need to make dummy variables for ethnicity to isolate its effect
+#we need to make dummy variables for ethnicity to isolate its effect
 output = lm(rvote ~ white, data = votedata25)
 output
 output = lm(rvote ~ white + sex, data = votedata25)
@@ -64,7 +64,13 @@ table(my.prediction) #there are four possible probabilities of voting republican
 plot(output$posterior$components$a, vote.df25.reduced$rvote)
 plot(my.prediction, vote.df25$white)
 
-?glmer
+
+output<-gp(formula = rvote~rbf(c("white", "man", "mar", "kid")), data = vote.df25.reduced, family = binomial)
+my.prediction<-predict(output, vote.df25, type="response")
+table(my.prediction) #there are 16 possibilities 
+plot(output$posterior$components$a, vote.df25.reduced$rvote)
+
+
 
 #working with glmer function
 vote.df25.reduced<-vote.df25[,c("rvote", "WM", "WF", "NWM", "NWF", "kid")]
