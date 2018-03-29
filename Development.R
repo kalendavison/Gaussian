@@ -34,10 +34,10 @@ vote_data$man<-ifelse(vote_data$sex==1, c(1), c(0)) #recode sex to 0 1 dummy ins
 vote_data$mar<-ifelse(vote_data$mar==1, c(1), c(0)) #recode married to 0 1
 vote_data$kid<-ifelse(vote_data$kid==1, c(1), c(0)) #recode kid to 0 1 
 
-vote_data$WM<-ifelse(vote_data$white==1 & vote_data$sex==1, c(1), c(0)) #White Male combined variable
-vote_data$WF<-ifelse(vote_data$white==1 & vote_data$sex==0, c(1), c(0)) #White female combined variable 
-vote_data$NWM<-ifelse(vote_data$white==0 & vote_data$sex==1, c(1), c(0)) #Nonwhite Male combined variable 
-vote_data$NWF<-ifelse(vote_data$white==0 & vote_data$sex==0, c(1), c(0)) #Nonwhite female combined variable 
+vote_data$WM<-ifelse(vote_data$white==1 & vote_data$man==1, c(1), c(0)) #White Male combined variable
+vote_data$WF<-ifelse(vote_data$white==1 & vote_data$man==0, c(1), c(0)) #White female combined variable 
+vote_data$NWM<-ifelse(vote_data$white==0 & vote_data$man==1, c(1), c(0)) #Nonwhite Male combined variable 
+vote_data$NWF<-ifelse(vote_data$white==0 & vote_data$man==0, c(1), c(0)) #Nonwhite female combined variable 
 
 votedata25<-subset(vote_data, vote_data$state.f25==1) #using only 25th state for now
 
@@ -77,7 +77,7 @@ var1 = as.factor(vote.df25.reduced$WM)
 var2 = as.factor(vote.df25.reduced$WF)
 var3 = as.factor(vote.df25.reduced$NWM)
 var4 = as.factor(vote.df25.reduced$NWF)
-check = glmer(formula = rvote ~ (1|kid) + var3 + var1, data = vote.df25.reduced, family = binomial) 
+check = glmer(formula = rvote ~ (1|var4) + var1 + var2 + var3, data = vote.df25.reduced, family = binomial) 
 display(check) 
 plot(check@resp$family$variance) #variance is relatively normally distributed which is good
 
