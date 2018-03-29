@@ -78,7 +78,15 @@ var1 = as.factor(vote.df25.reduced$WM)
 var2 = as.factor(vote.df25.reduced$WF)
 var3 = as.factor(vote.df25.reduced$NWM)
 var4 = as.factor(vote.df25.reduced$NWF)
-check = glmer(formula = rvote ~ (1|WM) + var1 + var2, data = vote.df25.reduced, family = binomial) #may need more variables (white man...nonwhite woman)
+check = glmer(formula = rvote ~ (1|kid) + var1 + var3, data = vote.df25.reduced, family = binomial) #may need more variables (white man...nonwhite woman)
+display(check) 
+plot(check)
+
+vote.df25.reduced<-vote.df25[,c("rvote", "white", "man", "mar", "kid")]
+var1 = as.factor(vote.df25.reduced$white)
+var2 = as.factor(vote.df25.reduced$man)
+var3 = as.factor(vote.df25.reduced$mar)
+check = glmer(formula = rvote ~ (1|kid) + var1 + var2 + var3, data = vote.df25.reduced, family = binomial) #may need more variables (white man...nonwhite woman)
 display(check) 
 plot(check)
 #the functionality of glmer seems to be working but not sure how to interpret, and inputs are prob formatted incorrectly
