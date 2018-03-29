@@ -30,14 +30,26 @@ vote_data$black<-ifelse(vote_data$eth==2, c(1), c(0))
 vote_data$hisp<-ifelse(vote_data$eth==3, c(1), c(0))
 vote_data$api<-ifelse(vote_data$eth==4, c(1), c(0))
 
+# dummy variables for sex
+vote_data$male <- ifelse(vote_data$sex==1, c(1), c(0))
+vote_data$female <- ifelse(vote_data$sex==2, c(1), c(0))
+
+# order might be off, and these might not be proper categories
+# dummy variables for education
+vote_data$noHS <- ifelse(vote_data$edu==1, c(1), c(0))
+vote_data$HSgrad <- ifelse(vote_data$edu==2, c(1), c(0))
+vote_data$somecollege <- ifelse(vote_data$edu==3, c(1), c(0))
+vote_data$bachelors <- ifelse(vote_data$edu==4, c(1), c(0))
+vote_data$adv_degree <- ifelse(vote_data$edu==5, c(1), c(0))
+
 vote_data$man<-ifelse(vote_data$sex==1, c(1), c(0)) #recode sex to 0 1 dummy instead of 1 2
 vote_data$mar<-ifelse(vote_data$mar==1, c(1), c(0)) #recode married to 0 1
 vote_data$kid<-ifelse(vote_data$kid==1, c(1), c(0)) #recode kid to 0 1 
 
-vote_data$WM<-ifelse(vote_data$white==1 & vote_data$man==1, c(1), c(0)) #White Male combined variable
-vote_data$WF<-ifelse(vote_data$white==1 & vote_data$man==0, c(1), c(0)) #White female combined variable 
-vote_data$NWM<-ifelse(vote_data$white==0 & vote_data$man==1, c(1), c(0)) #Nonwhite Male combined variable 
-vote_data$NWF<-ifelse(vote_data$white==0 & vote_data$man==0, c(1), c(0)) #Nonwhite female combined variable 
+# vote_data$WM<-ifelse(vote_data$white==1 & vote_data$man==1, c(1), c(0)) #White Male combined variable
+# vote_data$WF<-ifelse(vote_data$white==1 & vote_data$man==0, c(1), c(0)) #White female combined variable 
+# vote_data$NWM<-ifelse(vote_data$white==0 & vote_data$man==1, c(1), c(0)) #Nonwhite Male combined variable 
+# vote_data$NWF<-ifelse(vote_data$white==0 & vote_data$man==0, c(1), c(0)) #Nonwhite female combined variable 
 
 votedata25<-subset(vote_data, vote_data$state.f25==1) #using only 25th state for now
 
@@ -98,3 +110,8 @@ plot(check@resp$family$variance)
 #fit the models with all the covariates - want 2 to 3 states, show how predictions do or don't match up
 #extend the code out to the full set
 #race/ethnicity sex state education
+
+# 1 add dummy variables for education
+# 2 change output of gp function to just return unique predictor values for each demographic subgroup
+# 3 do gp function for 2 - 3 states, see how predictors hold up in other states - check for similarity
+# 4 glmer: make all of the indicators random effect variables, enter all the variables
