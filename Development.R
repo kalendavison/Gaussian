@@ -65,9 +65,9 @@ plot(output$posterior$components$a, vote.df25.reduced$rvote)
 plot(my.prediction, vote.df25$white)
 
 
-output<-gp(formula = rvote~rbf(c("white", "man", "mar", "kid")), data = vote.df25.reduced, family = binomial)
+output<-gp(formula = rvote~rbf(c("man", "white", "mar", "kid")), data = vote.df25.reduced, family = binomial)
 my.prediction<-predict(output, vote.df25, type="response")
-table(my.prediction) #there are 16 possibilities 
+as.data.frame(table(my.prediction)) #there are 16 possibilities 
 plot(output$posterior$components$a, vote.df25.reduced$rvote)
 
 
@@ -78,7 +78,7 @@ var1 = as.factor(vote.df25.reduced$WM)
 var2 = as.factor(vote.df25.reduced$WF)
 var3 = as.factor(vote.df25.reduced$NWM)
 var4 = as.factor(vote.df25.reduced$NWF)
-check = glmer(formula = rvote ~ (1|kid) + var1 + var3, data = vote.df25.reduced, family = binomial) #may need more variables (white man...nonwhite woman)
+check = glmer(formula = rvote ~ (1|kid) + var3 + var1, data = vote.df25.reduced, family = binomial) 
 display(check) 
 plot(check@resp$family$variance) #variance is relatively normally distributed which is good
 
@@ -87,8 +87,10 @@ vote.df25.reduced<-vote.df25[,c("rvote", "white", "man", "mar", "kid")]
 var1 = as.factor(vote.df25.reduced$white)
 var2 = as.factor(vote.df25.reduced$man)
 var3 = as.factor(vote.df25.reduced$mar)
-check = glmer(formula = rvote ~ (1|kid) + var1 + var2 + var3, data = vote.df25.reduced, family = binomial) #may need more variables (white man...nonwhite woman)
+check = glmer(formula = rvote ~ (1|kid) + var1 + var2 + var3, data = vote.df25.reduced, family = binomial) 
 display(check) 
 plot(check)
+plot(check@resp$family$variance)
+
 #the functionality of glmer seems to be working but not sure how to interpret, and inputs are prob formatted incorrectly
 #the results suggest that being a woman makes you less likely to vote repub and that being white makes you more likely to vote repub
