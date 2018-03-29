@@ -22,7 +22,6 @@ vote_data = read.delim("votingdata.dat") #read in dataset
 ### recoding dataset for analysis
 vote_data = na.exclude(vote_data) #cleaning of all missing data
 vote_data <- vote_data[!(vote_data$stt==12),] #removal of Hawaii
-View(vote_datatest)
 state.f<-factor(vote_data$stt)
 dummies<-model.matrix(~state.f)
 vote_data<-cbind(vote_data, dummies)
