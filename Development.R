@@ -58,12 +58,11 @@ output #being white has a stronger affect on voting republican
 #using gp function to do analysis
 vote.df25<-as.data.frame(votedata25)
 vote.df25.reduced<-vote.df25[,c("rvote", "white", "man", "mar", "kid")]
+
 output<-gp(formula = rvote~rbf(c("white", "man")), data = vote.df25.reduced, family = binomial) ### compare output of this with lmer output. see pdf on doc for assistance
 my.prediction<-predict(output, vote.df25, type="response")
-table(my.prediction) #there are four possible probabilities of voting republican (associated with white male, nonwhite male, white female, nonwhite female)
+as.data.frame(table(my.prediction)) #there are four possible probabilities of voting republican (associated with white male, nonwhite male, white female, nonwhite female)
 plot(output$posterior$components$a, vote.df25.reduced$rvote)
-plot(my.prediction, vote.df25$white)
-
 
 output<-gp(formula = rvote~rbf(c("man", "white", "mar", "kid")), data = vote.df25.reduced, family = binomial)
 my.prediction<-predict(output, vote.df25, type="response")
