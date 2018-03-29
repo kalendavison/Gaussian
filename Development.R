@@ -99,10 +99,8 @@ vote.df25.reduced<-vote.df25[,c("rvote", "white", "man", "mar", "kid")]
 var1 = as.factor(vote.df25.reduced$white)
 var2 = as.factor(vote.df25.reduced$man)
 var3 = as.factor(vote.df25.reduced$mar)
-check = glmer(formula = rvote ~ (1|kid) + var1 + var2 + var3, data = vote.df25.reduced, family = binomial) 
+check = glm(formula = rvote ~ var1 + var2 + var3, data = vote.df25.reduced, family = binomial) 
 display(check) 
-plot(check)
-plot(check@resp$family$variance)
 
 #the functionality of glmer seems to be working but not sure how to interpret, and inputs are prob formatted incorrectly
 #the results suggest that being a woman makes you less likely to vote repub and that being white makes you more likely to vote repub
