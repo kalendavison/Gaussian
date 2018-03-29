@@ -83,7 +83,7 @@ display(check)
 plot(check@resp$family$variance) #variance is relatively normally distributed which is good
 
 
-vote.df25.reduced<-vote.df25[,c("rvote", "white", "man", "mar", "kid")]
+vote.df25.reduced<-vote.df25[,c("rvote", "white", "black", "hisp", "api", "male", "female", "noHS", "HSgrad", "somecollege", "bachelors","adv_degree")]
 var1 = as.factor(vote.df25.reduced$white)
 var2 = as.factor(vote.df25.reduced$man)
 var3 = as.factor(vote.df25.reduced$mar)
