@@ -65,7 +65,7 @@ output_mass<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df22, f
 
 #make a fake dataset for each unique demographic combination 
 eth = c(rep(1,10), rep(2,10), rep(3,10), rep(4,10))
-sex = c(rep((c(rep(0,5), rep(1,5))), 4))
+sex = c(rep((c(rep(1,5), rep(2,5))), 4))
 edu = rep(1:5, 8)
 fake.dataset = data.frame(eth, sex, edu)
 
@@ -80,9 +80,9 @@ View(demographic.prediction.AZ)
 demographic.prediction.MA = data.frame(predictions_mass, fake.dataset)
 View(demographic.prediction.MA)
 
-plot(demographic.prediction.MS$predictions_miss)
-
-
+plot(demographic.prediction.MS$predictions_miss) #MS voting patterns are highly related to ethnicity
+plot(demographic.prediction.AZ$predictions_ariz)
+plot(demographic.prediction.MA$predictions_mass)
 
 
 #working with glmer function
