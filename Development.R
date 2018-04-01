@@ -82,9 +82,13 @@ table(my.prediction)
 as.data.frame(table(my.prediction)) #there are four possible probabilities of voting republican (associated with white male, nonwhite male, white female, nonwhite female)
 plot(output$posterior$components$a, vote.df25.reduced$rvote)
 
-output<-gp(formula = rvote~rbf(c("man", "white", "mar", "kid")), data = vote.df25.reduced, family = binomial)
-my.prediction<-predict(output, vote.df25, type="response")
-as.data.frame(table(my.prediction)) #there are 16 possibilities 
+output<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df25.reduced, family = binomial)
+eth = c(rep(1,10), rep(2,10), rep(3,10), rep(4,10))
+sex = c(rep((c(rep(0,5), rep(1,5))), 4))
+edu = rep(1:5, 8)
+fake.dataset = data.frame(eth, sex, edu)
+my.prediction<-predict(output, fake.dataset, type="response")
+as.data.frame(table(my.prediction)) #there are 40 possibilities 
 plot(output$posterior$components$a, vote.df25.reduced$rvote)
 
 
