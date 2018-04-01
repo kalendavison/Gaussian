@@ -86,20 +86,22 @@ plot(demographic.prediction.MA$predictions_mass)
 
 
 #working with glmer function
-vote.df25.reduced<-vote.df25[,c("rvote", "white", "black", "hisp", "api", "male", "female", "noHS", "HSgrad", "somecollege", "bachelors","adv_degree")]
-var1 = vote.df25.reduced$white
-var2 = vote.df25.reduced$hisp
-var3 = vote.df25.reduced$black
-var4 = vote.df25.reduced$api
-var5 = vote.df25.reduced$male
-var6 = vote.df25.reduced$female
-var7 = vote.df25.reduced$noHS
-var8 = vote.df25.reduced$HSgrad
-var9 = vote.df25.reduced$somecollege
-var10 = vote.df25.reduced$bachelors
-var11 = vote.df25.reduced$adv_degree
+vote.df25<-vote.df25[,c("rvote", "white", "black", "hisp", "api", "male", "female", "noHS", "HSgrad", "somecollege", "bachelors","adv_degree")]
+var1 = vote.df25$white
+var2 = vote.df25$hisp
+var3 = vote.df25$black
+var4 = vote.df25$api
+var5 = vote.df25$male
+var6 = vote.df25$female
+var7 = vote.df25$noHS
+var8 = vote.df25$HSgrad
+var9 = vote.df25$somecollege
+var10 = vote.df25$bachelors
+var11 = vote.df25$adv_degree
 
 
-check = glmer(formula = rvote ~ (1|var1) + (1|var2) + (1|var3) + (1|var4) + (1|var5)
-              + (1|var7) + (1|var8) + (1|var9) + (1|var10) + (1|var11), data = vote.df25.reduced, family = binomial) 
+check = glmer(formula = rvote ~ (1|var1) + (1|var2) + (1|var3) + (1|var4) + (1|var5) + (1|var6)
+              + (1|var7) + (1|var8) + (1|var9) + (1|var10) + (1|var11), data = vote.df25, family = binomial) 
 display(check) 
+
+
