@@ -94,6 +94,7 @@ output_mass<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df22, f
 
 
 output<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df25, family = binomial)
+output<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df25.reduced, family = binomial)
 eth = c(rep(1,10), rep(2,10), rep(3,10), rep(4,10))
 sex = c(rep((c(rep(0,5), rep(1,5))), 4))
 edu = rep(1:5, 8)
