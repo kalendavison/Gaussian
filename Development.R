@@ -87,10 +87,10 @@ eth = c(rep(1,10), rep(2,10), rep(3,10), rep(4,10))
 sex = c(rep((c(rep(0,5), rep(1,5))), 4))
 edu = rep(1:5, 8)
 fake.dataset = data.frame(eth, sex, edu)
-my.prediction<-predict(output, fake.dataset, type="response")
-as.data.frame(table(my.prediction)) #there are 40 possibilities 
-plot(output$posterior$components$a, vote.df25.reduced$rvote)
-
+predictions<-predict(output, fake.dataset, type="response")
+demographic.prediction = data.frame(predictions, fake.dataset)
+View(demographic.prediction) #there are 40 possibilities 
+plot(demographic.prediction$prediction)
 
 
 #working with glmer function
