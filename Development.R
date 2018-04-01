@@ -51,7 +51,11 @@ vote_data$kid<-ifelse(vote_data$kid==1, c(1), c(0)) #recode kid to 0 1
 # vote_data$NWM<-ifelse(vote_data$white==0 & vote_data$man==1, c(1), c(0)) #Nonwhite Male combined variable 
 # vote_data$NWF<-ifelse(vote_data$white==0 & vote_data$man==0, c(1), c(0)) #Nonwhite female combined variable 
 
-votedata25<-subset(vote_data, vote_data$state.f25==1) #using only 25th state for now
+votedata25<-subset(vote_data, vote_data$state.f25==1) #using only 25th state for now - Mississippi
+
+votedata3<-subset(vote_data, vote_data$state.f3==1) #using only 3rd state - Arizona
+votedata22<-subset(vote_data, vote_data$state.f22==1) #Massachusetts
+
 
 mean(votedata25$rvote[votedata25$eth == 1], na.rm = TRUE) #white mean republican vote proportion
 mean(votedata25$rvote[votedata25$eth == 2], na.rm = TRUE) #black
@@ -82,7 +86,14 @@ table(my.prediction)
 as.data.frame(table(my.prediction)) #there are four possible probabilities of voting republican (associated with white male, nonwhite male, white female, nonwhite female)
 plot(output$posterior$components$a, vote.df25.reduced$rvote)
 
-output<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df25.reduced, family = binomial)
+
+vote.df3<-as.data.frame(votedata3)
+vote.df22<-as.data.frame(votedata22)
+output_ariz<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df3, family = binomial)
+output_mass<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df22, family = binomial)
+
+
+output<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df25, family = binomial)
 eth = c(rep(1,10), rep(2,10), rep(3,10), rep(4,10))
 sex = c(rep((c(rep(0,5), rep(1,5))), 4))
 edu = rep(1:5, 8)
@@ -111,17 +122,3 @@ var11 = vote.df25.reduced$adv_degree
 check = glmer(formula = rvote ~ (1|var1) + (1|var2) + (1|var3) + (1|var4) + (1|var5)
               + (1|var7) + (1|var8) + (1|var9) + (1|var10) + (1|var11), data = vote.df25.reduced, family = binomial) 
 display(check) 
-
-#the functionality of glmer seems to be working but not sure how to interpret, and inputs are prob formatted incorrectly
-#the results suggest that being a woman makes you less likely to vote repub and that being white makes you more likely to vote repub
-
-#fit the models with all the covariates - want 2 to 3 states, show how predictions do or don't match up
-#extend the code out to the full set
-#race/ethnicity sex state education
-
-# 1 add dummy variables for education
-# 2 change output of gp function to just return unique predictor values for each demographic subgroup
-# 3 do gp function for 2 - 3 states, see how predictors hold up in other states - check for similarity
-# 4 glmer: make all of the indicators random effect variables, enter all the variables
-
-# use same strategy with glmer as we do with gp. make a fake dataset for predictions
