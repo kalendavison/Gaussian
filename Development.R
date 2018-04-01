@@ -42,7 +42,6 @@ vote_data$somecollege <- ifelse(vote_data$edu==3, c(1), c(0))
 vote_data$bachelors <- ifelse(vote_data$edu==4, c(1), c(0))
 vote_data$adv_degree <- ifelse(vote_data$edu==5, c(1), c(0))
 
-vote_data$man<-ifelse(vote_data$sex==1, c(1), c(0)) #recode sex to 0 1 dummy instead of 1 2
 vote_data$mar<-ifelse(vote_data$mar==1, c(1), c(0)) #recode married to 0 1
 vote_data$kid<-ifelse(vote_data$kid==1, c(1), c(0)) #recode kid to 0 1 
 
@@ -52,57 +51,38 @@ vote_data$kid<-ifelse(vote_data$kid==1, c(1), c(0)) #recode kid to 0 1
 # vote_data$NWF<-ifelse(vote_data$white==0 & vote_data$man==0, c(1), c(0)) #Nonwhite female combined variable 
 
 votedata25<-subset(vote_data, vote_data$state.f25==1) #using only 25th state for now - Mississippi
-
 votedata3<-subset(vote_data, vote_data$state.f3==1) #using only 3rd state - Arizona
 votedata22<-subset(vote_data, vote_data$state.f22==1) #Massachusetts
 
 
-mean(votedata25$rvote[votedata25$eth == 1], na.rm = TRUE) #white mean republican vote proportion
-mean(votedata25$rvote[votedata25$eth == 2], na.rm = TRUE) #black
-mean(votedata25$rvote[votedata25$eth == 3], na.rm = TRUE) #asian/hispanic
-mean(votedata25$rvote[votedata25$eth == 4], na.rm = TRUE) #asian/hispanic
-mean(votedata25$rvote[votedata25$sex == 1], na.rm = TRUE) #male republican vote proportion
-mean(votedata25$rvote[votedata25$sex == 2], na.rm = TRUE) #female
-
-#basic multivariate regression analysis
-#we need to make dummy variables for ethnicity to isolate its effect
-output = lm(rvote ~ white, data = votedata25)
-output
-output = lm(rvote ~ white + sex, data = votedata25)
-output #being white has a stronger affect on voting republican
-
-#using gp function to do analysis
-vote.df25<-as.data.frame(votedata25)
-vote.df25.reduced<-vote.df25[,c("rvote", "white", "man", "mar", "kid")]
-
-# make a pretend data set with one instance of all possible configurations of demographics white male, black male, 
-# feed into predict function, append
-
-output<-gp(formula = rvote~rbf(c("white", "man")), data = vote.df25.reduced, family = binomial) ### compare output of this with lmer output. see pdf on doc for assistance
-my.prediction<-predict(output, vote.df25, type="response") # replace vote.df25 with fake data set made above
-my.prediction <- unique(my.prediction)
-table(my.prediction)
-# put demographic category w/ prediction into a table
-as.data.frame(table(my.prediction)) #there are four possible probabilities of voting republican (associated with white male, nonwhite male, white female, nonwhite female)
-plot(output$posterior$components$a, vote.df25.reduced$rvote)
-
-
-vote.df3<-as.data.frame(votedata3)
-vote.df22<-as.data.frame(votedata22)
+#using 
+vote.df25<-as.data.frame(votedata25) #Mississippi
+vote.df3<-as.data.frame(votedata3) #Arizona
+vote.df22<-as.data.frame(votedata22) #Massachusetts
+output_miss<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df25, family = binomial)
 output_ariz<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df3, family = binomial)
 output_mass<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df22, family = binomial)
 
-
-output<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df25, family = binomial)
-output<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df25.reduced, family = binomial)
+#make a fake dataset for each unique demographic combination 
 eth = c(rep(1,10), rep(2,10), rep(3,10), rep(4,10))
 sex = c(rep((c(rep(0,5), rep(1,5))), 4))
 edu = rep(1:5, 8)
 fake.dataset = data.frame(eth, sex, edu)
-predictions<-predict(output, fake.dataset, type="response")
-demographic.prediction = data.frame(predictions, fake.dataset)
-View(demographic.prediction) #there are 40 possibilities 
-plot(demographic.prediction$prediction)
+
+predictions_miss<-predict(output_miss, fake.dataset, type="response")
+predictions_ariz<-predict(output_ariz, fake.dataset, type="response")
+predictions_mass<-predict(output_mass, fake.dataset, type="response")
+
+demographic.prediction.MS = data.frame(predictions_miss, fake.dataset)
+View(demographic.prediction.MS) 
+demographic.prediction.AZ = data.frame(predictions_ariz, fake.dataset)
+View(demographic.prediction.AZ) 
+demographic.prediction.MA = data.frame(predictions_mass, fake.dataset)
+View(demographic.prediction.MA)
+
+plot(demographic.prediction.MS$predictions_miss)
+
+
 
 
 #working with glmer function
