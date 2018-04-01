@@ -90,16 +90,6 @@ plot(output$posterior$components$a, vote.df25.reduced$rvote)
 
 
 #working with glmer function
-vote.df25.reduced<-vote.df25[,c("rvote", "WM", "WF", "NWM", "NWF", "kid")]
-var1 = as.factor(vote.df25.reduced$WM)
-var2 = as.factor(vote.df25.reduced$WF)
-var3 = as.factor(vote.df25.reduced$NWM)
-var4 = as.factor(vote.df25.reduced$NWF)
-check = glmer(formula = rvote ~ (1|var4) + var1 + var2 + var3, data = vote.df25.reduced, family = binomial) 
-display(check) 
-plot(check@resp$family$variance) #variance is relatively normally distributed which is good
-
-
 vote.df25.reduced<-vote.df25[,c("rvote", "white", "black", "hisp", "api", "male", "female", "noHS", "HSgrad", "somecollege", "bachelors","adv_degree")]
 var1 = vote.df25.reduced$white
 var2 = vote.df25.reduced$hisp
