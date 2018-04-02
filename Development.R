@@ -103,11 +103,14 @@ fake.dataset.2 = data.frame(white, black, hisp, api, male, female, noHS, HSgrad,
 View(fake.dataset.2)
 
 vote.df25<-vote.df25[,c("rvote", "white", "black", "hisp", "api", "male", "female", "noHS", "HSgrad", "somecollege", "bachelors","adv_degree")]
-var1 = vote.df25$white
-var2 = vote.df25$black
-var3 = vote.df25$hisp
-var4 = vote.df25$api
-var5 = vote.df25$male
+vote.df25<-vote.df25[,c("rvote", "eth", "sex", "edu")]
+
+var1 = vote.df25$eth
+var1 = as.factor(var1)
+var2 = vote.df25$sex
+var2 = as.factor(var2)
+var3 = vote.df25$edu
+var3 = as.factor(var3)
 var6 = vote.df25$female
 var7 = vote.df25$noHS
 var8 = vote.df25$HSgrad
@@ -116,8 +119,14 @@ var10 = vote.df25$bachelors
 var11 = vote.df25$adv_degree
 
 
-check = glmer(formula = rvote ~ (1|var1) + (1|var2) + (1|var3) + (1|var4) + (1|var5) + (1|var6)
-              + (1|var7) + (1|var8) + (1|var9) + (1|var10) + (1|var11), data = vote.df25, family = binomial) 
+check = glmer(formula = rvote ~ (1|var1) + (1|var2) + (1|var3), data = vote.df25, family = binomial) 
 display(check) 
 
+colnames(fake.dataset.2)
+dim(vote.df25)
+glmer_predictions = as.data.frame(predict(check, newdata=fake.dataset, type="response"))
+
+
+?glmer
+?predict
 
