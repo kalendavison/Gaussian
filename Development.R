@@ -59,6 +59,9 @@ votedata22<-subset(vote_data, vote_data$state.f22==1) #Massachusetts
 vote.df25<-as.data.frame(votedata25) #Mississippi
 vote.df3<-as.data.frame(votedata3) #Arizona
 vote.df22<-as.data.frame(votedata22) #Massachusetts
+#vote.df25$sex = as.factor(vote.df25$sex)
+#vote.df25$edu = as.factor(vote.df25$edu)
+#vote.df25$eth = as.factor(vote.df25$eth) #changing them to factors DOES NOT WORK
 output_miss<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df25, family = binomial)
 output_ariz<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df3, family = binomial)
 output_mass<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df22, family = binomial)
@@ -102,7 +105,6 @@ adv_degree <- rep(c(0,0,0,0,1),8)
 fake.dataset.2 = data.frame(white, black, hisp, api, male, female, noHS, HSgrad, somecollege, bachelors, adv_degree)
 View(fake.dataset.2)
 
-vote.df25<-vote.df25[,c("rvote", "white", "black", "hisp", "api", "male", "female", "noHS", "HSgrad", "somecollege", "bachelors","adv_degree")]
 vote.df25<-vote.df25[,c("rvote", "eth", "sex", "edu")]
 
 var1 = vote.df25$eth
@@ -111,22 +113,13 @@ var2 = vote.df25$sex
 var2 = as.factor(var2)
 var3 = vote.df25$edu
 var3 = as.factor(var3)
-var6 = vote.df25$female
-var7 = vote.df25$noHS
-var8 = vote.df25$HSgrad
-var9 = vote.df25$somecollege
-var10 = vote.df25$bachelors
-var11 = vote.df25$adv_degree
 
 
 check = glmer(formula = rvote ~ (1|var1) + (1|var2) + (1|var3), data = vote.df25, family = binomial) 
 display(check) 
 
-colnames(fake.dataset.2)
 dim(vote.df25)
-glmer_predictions = as.data.frame(predict(check, newdata=fake.dataset, type="response"))
-
-
-?glmer
-?predict
-
+glmer_predictions = predict(check, newdata=fake.dataset, type="response")
+glmer_predictions = round(glmer, digits = 7)
+glmer_predictions = unique(glmer_predictions, nmax = 40)
+glmer_predictions = as.data.frame(glmer_predictions)
