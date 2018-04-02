@@ -68,7 +68,7 @@ eth = c(rep(1,10), rep(2,10), rep(3,10), rep(4,10))
 sex = c(rep((c(rep(1,5), rep(2,5))), 4))
 edu = rep(1:5, 8)
 fake.dataset = data.frame(eth, sex, edu)
-
+?predict
 predictions_miss<-predict(output_miss, fake.dataset, type="response")
 predictions_ariz<-predict(output_ariz, fake.dataset, type="response")
 predictions_mass<-predict(output_mass, fake.dataset, type="response")
@@ -86,10 +86,26 @@ plot(demographic.prediction.MA$predictions_mass)
 
 
 #working with glmer function
+
+#make a fake dataset for each unique demographic combination
+white <- c(rep(1,10), rep(0,30))
+black <- c(rep(0,10), rep(1,10), rep(0,20))
+hisp <- c(rep(0,20), rep(1,10), rep(0,10))
+api <- c(rep(0,30), rep(1,10))
+male <- rep((c(rep(1,5), rep(0,5))), 4)
+female <- rep((c(rep(0,5), rep(1,5))), 4)
+noHS <- rep(c(1,0,0,0,0),8)
+HSgrad <- rep(c(0,1,0,0,0),8)
+somecollege <- rep(c(0,0,1,0,0),8)
+bachelors <- rep(c(0,0,0,1,0),8)
+adv_degree <- rep(c(0,0,0,0,1),8)
+fake.dataset.2 = data.frame(white, black, hisp, api, male, female, noHS, HSgrad, somecollege, bachelors, adv_degree)
+View(fake.dataset.2)
+
 vote.df25<-vote.df25[,c("rvote", "white", "black", "hisp", "api", "male", "female", "noHS", "HSgrad", "somecollege", "bachelors","adv_degree")]
 var1 = vote.df25$white
-var2 = vote.df25$hisp
-var3 = vote.df25$black
+var2 = vote.df25$black
+var3 = vote.df25$hisp
 var4 = vote.df25$api
 var5 = vote.df25$male
 var6 = vote.df25$female
