@@ -131,6 +131,9 @@ test_predictions = as.data.frame(table(test_predictions))
 test_predictions = test_predictions[order(test_predictions$Freq),]
 test_predictions
 
-comparison = data.frame(glmer_predictions$glmer_predictions, test_predictions$test_predictions)
-comparison #direct comparison between two methods. The predictions are sometimes close and sometimes not.
+comparison = data.frame(glmer_predictions$glmer_predictions, test_predictions$test_predictions) #direct comparison between two methods. The predictions are sometimes close and sometimes not.
+comparison = comparison[order(comparison$glmer_predictions.glmer_predictions),]
+compare_table = data.frame(comparison, fake.dataset[1:37,]) #this is not correct, not sure which three demographic groups are being dropped
+compare_table
 #not sure why there are 37 observations instead of 40.
+
