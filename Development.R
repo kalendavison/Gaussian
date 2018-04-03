@@ -118,8 +118,14 @@ check = glmer(formula = rvote ~ (1|var1) + (1|var2) + (1|var3), data = vote.df25
 display(check) 
 
 dim(vote.df25)
-glmer_predictions = predict(check, newdata = fake.dataset, type="response")
+glmer_predictions = predict(check, newdata = vote.df25, type="response")
 glmer_predictions = round(glmer_predictions, digits = 10)
 glmer_predictions = unique(glmer_predictions, nmax = 40)
 glmer_predictions = as.data.frame(glmer_predictions)
 glmer_predictions = data.frame(fake.dataset, glmer_predictions)
+
+
+table(glmer_predictions)
+test = gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df25, family = binomial)
+test_predictions<-predict(test, vote.df25, type="response")
+table(test_predictions) #there's 37 predictionshere as well, but they dont' line up
