@@ -120,12 +120,17 @@ display(check)
 dim(vote.df25)
 glmer_predictions = predict(check, newdata = vote.df25, type="response")
 glmer_predictions = round(glmer_predictions, digits = 10)
-glmer_predictions = unique(glmer_predictions, nmax = 40)
-glmer_predictions = as.data.frame(glmer_predictions)
-glmer_predictions = data.frame(fake.dataset, glmer_predictions)
-
-
-table(glmer_predictions)
+glmer_predictions = as.data.frame(table(glmer_predictions))
+glmer_predictions = glmer_predictions[order(glmer_predictions$Freq),] #order data frame by frequency
+glmer_predictions
+#compare to
 test = gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df25, family = binomial)
 test_predictions<-predict(test, vote.df25, type="response")
-table(test_predictions) #there's 37 predictionshere as well, but they dont' line up
+test_predictions = round(test_predictions, digits = 10)
+test_predictions = as.data.frame(table(test_predictions))
+test_predictions = test_predictions[order(test_predictions$Freq),]
+test_predictions
+
+comparison = data.frame(glmer_predictions$glmer_predictions, test_predictions$test_predictions)
+comparison #direct comparison between two methods. The predictions are sometimes close and sometimes not.
+#not sure why there are 37 observations instead of 40.
