@@ -118,7 +118,8 @@ check = glmer(formula = rvote ~ (1|var1) + (1|var2) + (1|var3), data = vote.df25
 display(check) 
 
 dim(vote.df25)
-glmer_predictions = predict(check, newdata=fake.dataset, type="response")
-glmer_predictions = round(glmer, digits = 7)
+glmer_predictions = predict(check, newdata = fake.dataset, type="response")
+glmer_predictions = round(glmer_predictions, digits = 10)
 glmer_predictions = unique(glmer_predictions, nmax = 40)
 glmer_predictions = as.data.frame(glmer_predictions)
+glmer_predictions = data.frame(fake.dataset, glmer_predictions)
