@@ -71,7 +71,6 @@ eth = c(rep(1,10), rep(2,10), rep(3,10), rep(4,10))
 sex = c(rep((c(rep(1,5), rep(2,5))), 4))
 edu = rep(1:5, 8)
 fake.dataset = data.frame(eth, sex, edu)
-?predict
 predictions_miss<-predict(output_miss, fake.dataset, type="response")
 predictions_ariz<-predict(output_ariz, fake.dataset, type="response")
 predictions_mass<-predict(output_mass, fake.dataset, type="response")
