@@ -12,7 +12,7 @@ library(lme4)
 ?gp
 
 getwd()
-setwd("/Users/kalendavison/Desktop/Applied Statistical Programming")
+setwd("/Users/kalendavison/Desktop/Applied Statistical Programming/GitHub/Gaussian")
 setwd("/Users/isdav/Documents/GitHub/Gaussian")
 setwd("/Users/noahbardash/Documents/GitHub/Gaussian")
 vote_data = read.delim("votingdata.dat") #read in dataset
@@ -119,7 +119,6 @@ var3 = as.factor(var3)
 check = glmer(formula = rvote ~ (1|var1) + (1|var2) + (1|var3), data = vote.df25, family = binomial) 
 display(check) 
 
-dim(vote.df25)
 glmer_predictions = predict(check, newdata = vote.df25, type="response")
 glmer_predictions = round(glmer_predictions, digits = 10)
 glmer_predictions = as.data.frame(table(glmer_predictions))
@@ -155,12 +154,12 @@ var3 = as.factor(var3)
 check = glmer(formula = rvote ~ (1|var1) + (1|var2) + (1|var3), data = vote.df22, family = binomial) 
 display(check) 
 
-dim(vote.df22)
 glmer_predictions = predict(check, newdata = vote.df22, type="response")
 glmer_predictions = round(glmer_predictions, digits = 10)
 glmer_predictions = as.data.frame(table(glmer_predictions))
 glmer_predictions = glmer_predictions[order(glmer_predictions$Freq),] #order data frame by frequency
 glmer_predictions
+
 #compare to
 gptest = gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df22, family = binomial)
 gp_predictions<-predict(gptest, vote.df22, type="response")
@@ -169,6 +168,10 @@ gp_predictions = as.data.frame(table(gp_predictions))
 gp_predictions = gp_predictions[order(gp_predictions$Freq),]
 gp_predictions
 
-comparison = data.frame(glmer_predictions$glmer_predictions, gp_predictions$gp_predictions) #direct comparison between two methods. The predictions are sometimes close and sometimes not.
-comparison = comparison[order(comparison$glmer_predictions.glmer_predictions),]
-comparison
+comparison = data.frame(gp_predictions$gp_predictions, glmer_predictions, demographic.prediction.MA) #direct comparison between two methods. The predictions are sometimes close and sometimes not.
+comparison = comparison[order(comparison$glmer_predictions),]
+comparison$Freq=NULL 
+View(comparison)
+#the first two columns match up; however, we don't know what demographic group they pertain to. So I 
+#attached our previous gp predictions across the fake.dataset. We need to figure out a way to 
+#reorganize the data so that there are only five columns that match up: gp_predictions, glmer_predictions, eth, sex, edu
