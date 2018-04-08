@@ -67,7 +67,7 @@ vote.df<-as.data.frame(vote_data) # all 50 states
 output_miss<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df24, family = binomial)
 output_ariz<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df3, family = binomial)
 output_mass<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df21, family = binomial)
-output_all<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df, family = binomial)
+output_all<-gp(formula = rvote~rbf(c("sex", "edu", "eth", "stt")), data = vote.df, family = binomial)
 
 #make a fake dataset for each unique demographic combination 
 eth = c(rep(1,10), rep(2,10), rep(3,10), rep(4,10))
@@ -117,38 +117,38 @@ var3 = vote.df21$edu
 var3 = as.factor(var3)
 
 
-check = glmer(formula = rvote ~ (1|var1) + (1|var2) + (1|var3), data = vote.df21, family = binomial) 
+check = glmer(formula = rvote ~ (1|var1) + (1|var2) + (1|var3), data = vote.df21, family = binomial)  #run glmer function
 display(check) 
 
 glmer_predictions = predict(check, newdata = vote.df21, type="response")
-glmer_predictions = round(glmer_predictions, digits = 7)
-glmer_predictions = as.data.frame(table(glmer_predictions))
+glmer_predictions = round(glmer_predictions, digits = 7) #round for aesthetics and clear comparison
+glmer_predictions = as.data.frame(table(glmer_predictions)) #creates a frequency column to match with gp later
 glmer_predictions = glmer_predictions[order(glmer_predictions$Freq),] #order data frame by frequency
 glmer_predictions
 
 #compare to
 gptest = gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df21, family = binomial)
-gp_predictions<-predict(gptest, vote.df21, type="response")
-gp_predictions = round(gp_predictions, digits = 7)
-gp_predictions = as.data.frame(table(gp_predictions))
-gp_predictions = data.frame(gp_predictions)
-gp_predictions = gp_predictions[order(gp_predictions$Freq),]
+gp_predictions<-predict(gptest, vote.df21, type="response") #run gp through whole data set to get frequencies
+gp_predictions = round(gp_predictions, digits = 7) #round for clear comparison
+gp_predictions = as.data.frame(table(gp_predictions)) #access frequency
+gp_predictions = gp_predictions[order(gp_predictions$Freq),] #order by frequency to match with glmer
 gp_predictions
 
-ordered = demographic.prediction.MA[order(demographic.prediction.MA$predictions_mass),]
-comparison = data.frame(gp_predictions$gp_predictions, glmer_predictions$glmer_predictions, ordered) #direct comparison between two methods. The predictions are sometimes close and sometimes not.
-comparison = comparison[order(comparison$gp_predictions),]
-comparison$gp_predictions.gp_predictions = NULL
-comparison = comparison[order(comparison$glmer_predictions.glmer_predictions),]
-comparison$glmer = comparison$glmer_predictions.glmer_predictions
-comparison$glmer_predictions.glmer_predictions = NULL
-comparison$gp = comparison$predictions_mass
-comparison$predictions_mass = NULL
-comparison$glmer = as.vector(comparison$glmer)
+ordered = demographic.prediction.MA[order(demographic.prediction.MA$predictions_mass),] #order gp by fake.dataset to later add to master comparison
+comparison = data.frame(gp_predictions$gp_predictions, glmer_predictions$glmer_predictions, ordered) #to be cleaned to make sense
+comparison = comparison[order(comparison$gp_predictions),] #order by gp_predictions to match methods
+comparison$gp_predictions.gp_predictions = NULL #no longer necessary because added predictions_mass
+comparison = comparison[order(comparison$glmer_predictions.glmer_predictions),] #reorder 
+comparison$glmer = comparison$glmer_predictions.glmer_predictions #rename for sense
+comparison$glmer_predictions.glmer_predictions = NULL #no longer needed (just renamed)
+comparison$gp = comparison$predictions_mass #rename for sense
+comparison$predictions_mass = NULL #no longer needed (just renamed)
+comparison$glmer = as.vector(comparison$glmer) #change from a factor to numeric for plotting purposes
 View(comparison) #compares glmer and gp methods. Shows demographic group associated with each prediction.
 
 ###plots to figure out where the problems arise comparing the two groups###
-plot(seq(from = 0, to = .5, by = .0125), seq(from = 0, to = .5, by = .0125), xlab = "GP", ylab = "Glmer", type = "n", main = "Predictions compared by Ethnicity") #by ethnicity
+plot(seq(from = 0, to = .5, by = .0125), seq(from = 0, to = .5, by = .0125), xlab = "GP", ylab = "Glmer", type = "n", 
+     main = "Predictions compared by Ethnicity") #by ethnicity
 points(comparison$gp[comparison$eth == 1], comparison$glmer[comparison$eth == 1], col = "red", pch = 19)
 abline(lm(comparison$glmer[comparison$eth == 1] ~ comparison$gp[comparison$eth == 1]), col="red") # slope = 0.09
 points(comparison$gp[comparison$eth == 2], comparison$glmer[comparison$eth == 2], col = "yellow", pch = 19)
@@ -161,7 +161,8 @@ abline(lm(comparison$glmer[comparison$eth == 4] ~ comparison$gp[comparison$eth =
 fit<-lm(comparison$glmer ~ comparison$gp) #slope = 0.73
 abline(fit, col="blue")
 
-plot(seq(from = 0, to = .5, by = .0125), seq(from = 0, to = .5, by = .0125), type = "n", xlab= "GP", ylab = "Glmer", main = "Predictions compared by Sex") #by sex
+plot(seq(from = 0, to = .5, by = .0125), seq(from = 0, to = .5, by = .0125), type = "n", xlab= "GP", ylab = "Glmer", 
+     main = "Predictions compared by Sex") #by sex
 points(comparison$gp[comparison$sex == 1], comparison$glmer[comparison$sex == 1], col = "blue", pch = 19)
 abline(lm(comparison$glmer[comparison$sex==1] ~ comparison$gp[comparison$sex==1]), col="blue") # slope = 0.55
 points(comparison$gp[comparison$sex == 2], comparison$glmer[comparison$sex == 2], col = "pink", pch = 19)
@@ -170,7 +171,8 @@ abline(lm(comparison$glmer[comparison$sex==2] ~ comparison$gp[comparison$sex==2]
 fit<-lm(comparison$glmer ~ comparison$gp) #slope = 0.73
 abline(fit, col="black")
 
-plot(seq(from = 0, to = .5, by = .0125), seq(from = 0, to = .5, by = .0125), type = "n", xlab= "GP", ylab = "Glmer", main = "Predictions compared by Education") #by sex
+plot(seq(from = 0, to = .5, by = .0125), seq(from = 0, to = .5, by = .0125), type = "n", xlab= "GP", ylab = "Glmer", 
+     main = "Predictions compared by Education") #by sex
 points(comparison$gp[comparison$edu == 1], comparison$glmer[comparison$edu == 1], col = "purple", pch = 19)
 abline(lm(comparison$glmer[comparison$edu==1] ~ comparison$gp[comparison$edu==1]), col="purple") # slope = 0.47
 points(comparison$gp[comparison$edu == 2], comparison$glmer[comparison$edu == 2], col = "blue", pch = 19)
