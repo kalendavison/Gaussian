@@ -112,42 +112,6 @@ adv_degree <- rep(c(0,0,0,0,1),8)
 fake.dataset.2 = data.frame(white, black, hisp, api, male, female, noHS, HSgrad, somecollege, bachelors, adv_degree)
 
 
-
-### MISSISSIPPI
-vote.df25<-vote.df25[,c("rvote", "eth", "sex", "edu")]
-
-var1 = vote.df25$eth
-var1 = as.factor(var1)
-var2 = vote.df25$sex
-var2 = as.factor(var2)
-var3 = vote.df25$edu
-var3 = as.factor(var3)
-
-
-check = glmer(formula = rvote ~ (1|var1) + (1|var2) + (1|var3), data = vote.df25, family = binomial) 
-display(check) 
-
-glmer_predictions = predict(check, newdata = vote.df25, type="response")
-glmer_predictions = round(glmer_predictions, digits = 10)
-glmer_predictions = as.data.frame(table(glmer_predictions))
-glmer_predictions = glmer_predictions[order(glmer_predictions$Freq),] #order data frame by frequency
-glmer_predictions
-#compare to
-gptest = gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df25, family = binomial)
-gp_predictions<-predict(gptest, vote.df25, type="response")
-gp_predictions = round(gp_predictions, digits = 10)
-gp_predictions = as.data.frame(table(gp_predictions))
-gp_predictions = gp_predictions[order(gp_predictions$Freq),]
-gp_predictions
-
-comparison = data.frame(glmer_predictions$glmer_predictions, gp_predictions$gp_predictions) #direct comparison between two methods. The predictions are sometimes close and sometimes not.
-comparison = comparison[order(comparison$glmer_predictions.glmer_predictions),]
-comparison
-#37 observations instead of 40 because there are some missing demographic groups in the Mississippi data set
-
-
-
-
 #MASSACHUSETTS
 vote.df22<-vote.df22[,c("rvote", "eth", "sex", "edu")]
 
