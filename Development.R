@@ -23,12 +23,7 @@ vote_data = read.delim("votingdata.dat") #read in dataset
 vote_data = na.exclude(vote_data) #cleaning of all missing data
 vote_data <- vote_data[!(vote_data$stt==12),] #removal of Hawaii
 # based on variable values
-test1 <- vote_data[ which(vote_data$stt==13), ]
-View(test1)
-?apply
-if(vote_data$stt > 12) {
-  vote_data$stt <- vote_data$stt - 1
-}
+vote_data$stt <- ifelse(vote_data$stt > 12, vote_data$stt - 1, vote_data$stt)
 state.f<-factor(vote_data$stt)
 dummies<-model.matrix(~state.f)
 vote_data<-cbind(vote_data, dummies)
@@ -52,26 +47,26 @@ vote_data$adv_degree <- ifelse(vote_data$edu==5, c(1), c(0))
 vote_data$mar<-ifelse(vote_data$mar==1, c(1), c(0)) #recode married to 0 1
 vote_data$kid<-ifelse(vote_data$kid==1, c(1), c(0)) #recode kid to 0 1 
 
-votedata25<-subset(vote_data, vote_data$state.f25==1) #using only 25th state for now - Mississippi
+votedata24<-subset(vote_data, vote_data$state.f24==1) #using only 24th state for now - Mississippi
 votedata3<-subset(vote_data, vote_data$state.f3==1) #using only 3rd state - Arizona
-votedata22<-subset(vote_data, vote_data$state.f22==1) #Massachusetts
+votedata21<-subset(vote_data, vote_data$state.f21==1) #Massachusetts
 
 
 #using
-vote.df25<-as.data.frame(votedata25) #Mississippi
+vote.df24<-as.data.frame(votedata24) #Mississippi
 vote.df3<-as.data.frame(votedata3) #Arizona
-vote.df22<-as.data.frame(votedata22) #Massachusetts
+vote.df21<-as.data.frame(votedata21) #Massachusetts
 vote.df<-as.data.frame(vote_data) # all 50 states
 
-#vote.df25$sex = as.factor(vote.df25$sex)
-#vote.df25$edu = as.factor(vote.df25$edu)
-#vote.df25$eth = as.factor(vote.df25$eth) #changing them to factors DOES NOT WORK
+#vote.df24$sex = as.factor(vote.df24$sex)
+#vote.df24$edu = as.factor(vote.df24$edu)
+#vote.df24$eth = as.factor(vote.df24$eth) #changing them to factors DOES NOT WORK
 
 #need sex, edu, eth to be dummy variables
 
-output_miss<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df25, family = binomial)
+output_miss<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df24, family = binomial)
 output_ariz<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df3, family = binomial)
-output_mass<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df22, family = binomial)
+output_mass<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df21, family = binomial)
 output_all<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df, family = binomial)
 
 #make a fake dataset for each unique demographic combination 
@@ -114,27 +109,27 @@ fake.dataset.2 = data.frame(white, black, hisp, api, male, female, noHS, HSgrad,
 
 
 ### MISSISSIPPI
-vote.df25<-vote.df25[,c("rvote", "eth", "sex", "edu")]
+vote.df24<-vote.df24[,c("rvote", "eth", "sex", "edu")]
 
-var1 = vote.df25$eth
+var1 = vote.df24$eth
 var1 = as.factor(var1)
-var2 = vote.df25$sex
+var2 = vote.df24$sex
 var2 = as.factor(var2)
-var3 = vote.df25$edu
+var3 = vote.df24$edu
 var3 = as.factor(var3)
 
 
-check = glmer(formula = rvote ~ (1|var1) + (1|var2) + (1|var3), data = vote.df25, family = binomial) 
+check = glmer(formula = rvote ~ (1|var1) + (1|var2) + (1|var3), data = vote.df24, family = binomial) 
 display(check) 
 
-glmer_predictions = predict(check, newdata = vote.df25, type="response")
+glmer_predictions = predict(check, newdata = vote.df24, type="response")
 glmer_predictions = round(glmer_predictions, digits = 10)
 glmer_predictions = as.data.frame(table(glmer_predictions))
 glmer_predictions = glmer_predictions[order(glmer_predictions$Freq),] #order data frame by frequency
 glmer_predictions
 #compare to
-gptest = gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df25, family = binomial)
-gp_predictions<-predict(gptest, vote.df25, type="response")
+gptest = gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df24, family = binomial)
+gp_predictions<-predict(gptest, vote.df24, type="response")
 gp_predictions = round(gp_predictions, digits = 10)
 gp_predictions = as.data.frame(table(gp_predictions))
 gp_predictions = gp_predictions[order(gp_predictions$Freq),]
@@ -149,28 +144,28 @@ comparison
 
 
 #MASSACHUSETTS
-vote.df22<-vote.df22[,c("rvote", "eth", "sex", "edu")]
+vote.df21<-vote.df21[,c("rvote", "eth", "sex", "edu")]
 
-var1 = vote.df22$eth
+var1 = vote.df21$eth
 var1 = as.factor(var1)
-var2 = vote.df22$sex
+var2 = vote.df21$sex
 var2 = as.factor(var2)
-var3 = vote.df22$edu
+var3 = vote.df21$edu
 var3 = as.factor(var3)
 
 
-check = glmer(formula = rvote ~ (1|var1) + (1|var2) + (1|var3), data = vote.df22, family = binomial) 
+check = glmer(formula = rvote ~ (1|var1) + (1|var2) + (1|var3), data = vote.df21, family = binomial) 
 display(check) 
 
-glmer_predictions = predict(check, newdata = vote.df22, type="response")
+glmer_predictions = predict(check, newdata = vote.df21, type="response")
 glmer_predictions = round(glmer_predictions, digits = 7)
 glmer_predictions = as.data.frame(table(glmer_predictions))
 glmer_predictions = glmer_predictions[order(glmer_predictions$Freq),] #order data frame by frequency
 glmer_predictions
 
 #compare to
-gptest = gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df22, family = binomial)
-gp_predictions<-predict(gptest, vote.df22, type="response")
+gptest = gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df21, family = binomial)
+gp_predictions<-predict(gptest, vote.df21, type="response")
 gp_predictions = round(gp_predictions, digits = 7)
 gp_predictions = as.data.frame(table(gp_predictions))
 gp_predictions = data.frame(gp_predictions)
