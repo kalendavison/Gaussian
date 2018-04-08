@@ -105,7 +105,7 @@ somecollege <- rep(c(0,0,1,0,0),8)
 bachelors <- rep(c(0,0,0,1,0),8)
 adv_degree <- rep(c(0,0,0,0,1),8)
 fake.dataset.2 = data.frame(white, black, hisp, api, male, female, noHS, HSgrad, somecollege, bachelors, adv_degree)
-View(fake.dataset.2)
+
 
 
 ### MISSISSIPPI
@@ -185,9 +185,13 @@ comparison$glmer = as.vector(comparison$glmer)
 View(comparison) #compares glmer and gp methods. Shows demographic group associated with each prediction.
 
 ###plots to figure out where the problems arise comparing the two groups###
-plot(seq(from = 0, to = .5, by = .0125), seq(from = 0, to = .5, by = .0125), type = "n") #doesn't work and will fix later
-points(comparison$gp[eth == 1], comparison$glmer[eth == 1], col = "orange", pch = 19)
-points(comparison$gp[eth == 2], comparison$glmer[eth == 2], col = "red", pch = 19)
-points(comparison$gp[eth == 3], comparison$glmer[eth == 3], col = "green", pch = 19)
-points(comparison$gp[eth == 4], comparison$glmer[eth == 4], col = "blue", pch = 19) #ethnicity
+plot(seq(from = 0, to = .5, by = .0125), seq(from = 0, to = .5, by = .0125), xlab = "GP", ylab = "Glmer", type = "n") #by ethnicity
+points(comparison$gp[comparison$eth == 1], comparison$glmer[comparison$eth == 1], col = "red", pch = 19)
+points(comparison$gp[comparison$eth == 2], comparison$glmer[comparison$eth == 2], col = "yellow", pch = 19)
+points(comparison$gp[comparison$eth == 3], comparison$glmer[comparison$eth == 3], col = "green", pch = 19)
+points(comparison$gp[comparison$eth == 4], comparison$glmer[comparison$eth == 4], col = "black", pch = 19) 
+
+plot(seq(from = 0, to = .5, by = .0125), seq(from = 0, to = .5, by = .0125), type = "n") #by sex
+points(comparison$gp[sex == 1], comparison$glmer[sex == 1], col = "blue", pch = 19)
+points(comparison$gp[sex == 2], comparison$glmer[sex == 2], col = "pink", pch = 19)
 
