@@ -192,37 +192,37 @@ View(comparison) #compares glmer and gp methods. Shows demographic group associa
 ###plots to figure out where the problems arise comparing the two groups###
 plot(seq(from = 0, to = .5, by = .0125), seq(from = 0, to = .5, by = .0125), xlab = "GP", ylab = "Glmer", type = "n", main = "Predictions compared by Ethnicity") #by ethnicity
 points(comparison$gp[comparison$eth == 1], comparison$glmer[comparison$eth == 1], col = "red", pch = 19)
-abline(lm(comparison$glmer[comparison$eth == 1] ~ comparison$gp[comparison$eth == 1]), col="red")
+abline(lm(comparison$glmer[comparison$eth == 1] ~ comparison$gp[comparison$eth == 1]), col="red") # slope = 0.09
 points(comparison$gp[comparison$eth == 2], comparison$glmer[comparison$eth == 2], col = "yellow", pch = 19)
-abline(lm(comparison$glmer[comparison$eth == 2] ~ comparison$gp[comparison$eth == 2]), col="yellow")
+abline(lm(comparison$glmer[comparison$eth == 2] ~ comparison$gp[comparison$eth == 2]), col="yellow") # slope = 0.70
 points(comparison$gp[comparison$eth == 3], comparison$glmer[comparison$eth == 3], col = "green", pch = 19)
-abline(lm(comparison$glmer[comparison$eth == 3] ~ comparison$gp[comparison$eth == 3]), col="green")
+abline(lm(comparison$glmer[comparison$eth == 3] ~ comparison$gp[comparison$eth == 3]), col="green") # slope = 0.85
 points(comparison$gp[comparison$eth == 4], comparison$glmer[comparison$eth == 4], col = "black", pch = 19) 
-abline(lm(comparison$glmer[comparison$eth == 4] ~ comparison$gp[comparison$eth == 4]), col="black")
+abline(lm(comparison$glmer[comparison$eth == 4] ~ comparison$gp[comparison$eth == 4]), col="black") # slope = -0.03
 
 fit<-lm(comparison$glmer ~ comparison$gp) #slope = 0.73
 abline(fit, col="blue")
 
 plot(seq(from = 0, to = .5, by = .0125), seq(from = 0, to = .5, by = .0125), type = "n", xlab= "GP", ylab = "Glmer", main = "Predictions compared by Sex") #by sex
 points(comparison$gp[comparison$sex == 1], comparison$glmer[comparison$sex == 1], col = "blue", pch = 19)
-abline(lm(comparison$glmer[comparison$sex==1] ~ comparison$gp[comparison$sex==1]), col="blue")
+abline(lm(comparison$glmer[comparison$sex==1] ~ comparison$gp[comparison$sex==1]), col="blue") # slope = 0.55
 points(comparison$gp[comparison$sex == 2], comparison$glmer[comparison$sex == 2], col = "pink", pch = 19)
-abline(lm(comparison$glmer[comparison$sex==2] ~ comparison$gp[comparison$sex==2]), col="pink")
+abline(lm(comparison$glmer[comparison$sex==2] ~ comparison$gp[comparison$sex==2]), col="pink") # slope = 0.91
 
 fit<-lm(comparison$glmer ~ comparison$gp) #slope = 0.73
 abline(fit, col="black")
 
 plot(seq(from = 0, to = .5, by = .0125), seq(from = 0, to = .5, by = .0125), type = "n", xlab= "GP", ylab = "Glmer", main = "Predictions compared by Education") #by sex
 points(comparison$gp[comparison$edu == 1], comparison$glmer[comparison$edu == 1], col = "purple", pch = 19)
-abline(lm(comparison$glmer[comparison$edu==1] ~ comparison$gp[comparison$edu==1]), col="purple")
+abline(lm(comparison$glmer[comparison$edu==1] ~ comparison$gp[comparison$edu==1]), col="purple") # slope = 0.47
 points(comparison$gp[comparison$edu == 2], comparison$glmer[comparison$edu == 2], col = "blue", pch = 19)
-abline(lm(comparison$glmer[comparison$edu==2] ~ comparison$gp[comparison$edu==2]), col="blue")
+abline(lm(comparison$glmer[comparison$edu==2] ~ comparison$gp[comparison$edu==2]), col="blue") # slope = 0.75
 points(comparison$gp[comparison$edu == 3], comparison$glmer[comparison$edu == 3], col = "green", pch = 19)
-abline(lm(comparison$glmer[comparison$edu==3] ~ comparison$gp[comparison$edu==3]), col="green")
+abline(lm(comparison$glmer[comparison$edu==3] ~ comparison$gp[comparison$edu==3]), col="green") # slope = 1.07
 points(comparison$gp[comparison$edu == 4], comparison$glmer[comparison$edu == 4], col = "yellow", pch = 19)
-abline(lm(comparison$glmer[comparison$edu==4] ~ comparison$gp[comparison$edu==4]), col="yellow")
+abline(lm(comparison$glmer[comparison$edu==4] ~ comparison$gp[comparison$edu==4]), col="yellow") # slope = 0.65
 points(comparison$gp[comparison$edu == 5], comparison$glmer[comparison$edu == 5], col = "red", pch = 19)
-abline(lm(comparison$glmer[comparison$edu==5] ~ comparison$gp[comparison$edu==5]), col="red")
+abline(lm(comparison$glmer[comparison$edu==5] ~ comparison$gp[comparison$edu==5]), col="red") # slope = 1.53
 
 fit<-lm(comparison$glmer ~ comparison$gp) #slope = 0.73
 abline(fit, col="black")
