@@ -62,6 +62,9 @@ vote.df22<-as.data.frame(votedata22) #Massachusetts
 #vote.df25$sex = as.factor(vote.df25$sex)
 #vote.df25$edu = as.factor(vote.df25$edu)
 #vote.df25$eth = as.factor(vote.df25$eth) #changing them to factors DOES NOT WORK
+
+#need sex, edu, eth to be dummy variables
+
 output_miss<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df25, family = binomial)
 output_ariz<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df3, family = binomial)
 output_mass<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df22, family = binomial)
