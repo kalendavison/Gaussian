@@ -174,6 +174,11 @@ comparison = data.frame(gp_predictions$gp_predictions, glmer_predictions$glmer_p
 comparison = comparison[order(comparison$gp_predictions),]
 comparison$gp_predictions.gp_predictions = NULL
 comparison = comparison[order(comparison$glmer_predictions.glmer_predictions),]
+comparison$glmer = comparison$glmer_predictions.glmer_predictions
+comparison$glmer_predictions.glmer_predictions = NULL
+comparison$gp = comparison$predictions_mass
+comparison$predictions_mass = NULL
 View(comparison) #compares glmer and gp methods. Shows demographic group associated with each prediction.
 
-
+###plots to figure out where the problems arise comparing the two groups###
+plot(comparison$gp, comparison$glmer)
