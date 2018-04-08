@@ -106,43 +106,6 @@ bachelors <- rep(c(0,0,0,1,0),8)
 adv_degree <- rep(c(0,0,0,0,1),8)
 fake.dataset.2 = data.frame(white, black, hisp, api, male, female, noHS, HSgrad, somecollege, bachelors, adv_degree)
 
-
-
-### MISSISSIPPI
-vote.df24<-vote.df24[,c("rvote", "eth", "sex", "edu")]
-
-var1 = vote.df24$eth
-var1 = as.factor(var1)
-var2 = vote.df24$sex
-var2 = as.factor(var2)
-var3 = vote.df24$edu
-var3 = as.factor(var3)
-
-
-check = glmer(formula = rvote ~ (1|var1) + (1|var2) + (1|var3), data = vote.df24, family = binomial) 
-display(check) 
-
-glmer_predictions = predict(check, newdata = vote.df24, type="response")
-glmer_predictions = round(glmer_predictions, digits = 10)
-glmer_predictions = as.data.frame(table(glmer_predictions))
-glmer_predictions = glmer_predictions[order(glmer_predictions$Freq),] #order data frame by frequency
-glmer_predictions
-#compare to
-gptest = gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df24, family = binomial)
-gp_predictions<-predict(gptest, vote.df24, type="response")
-gp_predictions = round(gp_predictions, digits = 10)
-gp_predictions = as.data.frame(table(gp_predictions))
-gp_predictions = gp_predictions[order(gp_predictions$Freq),]
-gp_predictions
-
-comparison = data.frame(glmer_predictions$glmer_predictions, gp_predictions$gp_predictions) #direct comparison between two methods. The predictions are sometimes close and sometimes not.
-comparison = comparison[order(comparison$glmer_predictions.glmer_predictions),]
-comparison
-#37 observations instead of 40 because there are some missing demographic groups in the Mississippi data set
-
-
-
-
 #MASSACHUSETTS
 vote.df21<-vote.df21[,c("rvote", "eth", "sex", "edu")]
 
@@ -187,24 +150,39 @@ View(comparison) #compares glmer and gp methods. Shows demographic group associa
 ###plots to figure out where the problems arise comparing the two groups###
 plot(seq(from = 0, to = .5, by = .0125), seq(from = 0, to = .5, by = .0125), xlab = "GP", ylab = "Glmer", type = "n", main = "Predictions compared by Ethnicity") #by ethnicity
 points(comparison$gp[comparison$eth == 1], comparison$glmer[comparison$eth == 1], col = "red", pch = 19)
-abline(lm(comparison$glmer[comparison$eth == 1] ~ comparison$gp[comparison$eth == 1]), col="red")
+abline(lm(comparison$glmer[comparison$eth == 1] ~ comparison$gp[comparison$eth == 1]), col="red") # slope = 0.09
 points(comparison$gp[comparison$eth == 2], comparison$glmer[comparison$eth == 2], col = "yellow", pch = 19)
-abline(lm(comparison$glmer[comparison$eth == 2] ~ comparison$gp[comparison$eth == 2]), col="yellow")
+abline(lm(comparison$glmer[comparison$eth == 2] ~ comparison$gp[comparison$eth == 2]), col="yellow") # slope = 0.70
 points(comparison$gp[comparison$eth == 3], comparison$glmer[comparison$eth == 3], col = "green", pch = 19)
-abline(lm(comparison$glmer[comparison$eth == 3] ~ comparison$gp[comparison$eth == 3]), col="green")
+abline(lm(comparison$glmer[comparison$eth == 3] ~ comparison$gp[comparison$eth == 3]), col="green") # slope = 0.85
 points(comparison$gp[comparison$eth == 4], comparison$glmer[comparison$eth == 4], col = "black", pch = 19) 
-abline(lm(comparison$glmer[comparison$eth == 4] ~ comparison$gp[comparison$eth == 4]), col="black")
+abline(lm(comparison$glmer[comparison$eth == 4] ~ comparison$gp[comparison$eth == 4]), col="black") # slope = -0.03
 
-abline(lm(comparison$glmer ~ comparison$gp), col="blue")
+fit<-lm(comparison$glmer ~ comparison$gp) #slope = 0.73
+abline(fit, col="blue")
 
 plot(seq(from = 0, to = .5, by = .0125), seq(from = 0, to = .5, by = .0125), type = "n", xlab= "GP", ylab = "Glmer", main = "Predictions compared by Sex") #by sex
 points(comparison$gp[comparison$sex == 1], comparison$glmer[comparison$sex == 1], col = "blue", pch = 19)
+abline(lm(comparison$glmer[comparison$sex==1] ~ comparison$gp[comparison$sex==1]), col="blue") # slope = 0.55
 points(comparison$gp[comparison$sex == 2], comparison$glmer[comparison$sex == 2], col = "pink", pch = 19)
+abline(lm(comparison$glmer[comparison$sex==2] ~ comparison$gp[comparison$sex==2]), col="pink") # slope = 0.91
+
+fit<-lm(comparison$glmer ~ comparison$gp) #slope = 0.73
+abline(fit, col="black")
 
 plot(seq(from = 0, to = .5, by = .0125), seq(from = 0, to = .5, by = .0125), type = "n", xlab= "GP", ylab = "Glmer", main = "Predictions compared by Education") #by sex
 points(comparison$gp[comparison$edu == 1], comparison$glmer[comparison$edu == 1], col = "purple", pch = 19)
+abline(lm(comparison$glmer[comparison$edu==1] ~ comparison$gp[comparison$edu==1]), col="purple") # slope = 0.47
 points(comparison$gp[comparison$edu == 2], comparison$glmer[comparison$edu == 2], col = "blue", pch = 19)
+abline(lm(comparison$glmer[comparison$edu==2] ~ comparison$gp[comparison$edu==2]), col="blue") # slope = 0.75
 points(comparison$gp[comparison$edu == 3], comparison$glmer[comparison$edu == 3], col = "green", pch = 19)
+abline(lm(comparison$glmer[comparison$edu==3] ~ comparison$gp[comparison$edu==3]), col="green") # slope = 1.07
 points(comparison$gp[comparison$edu == 4], comparison$glmer[comparison$edu == 4], col = "yellow", pch = 19)
+abline(lm(comparison$glmer[comparison$edu==4] ~ comparison$gp[comparison$edu==4]), col="yellow") # slope = 0.65
 points(comparison$gp[comparison$edu == 5], comparison$glmer[comparison$edu == 5], col = "red", pch = 19)
+abline(lm(comparison$glmer[comparison$edu==5] ~ comparison$gp[comparison$edu==5]), col="red") # slope = 1.53
 
+fit<-lm(comparison$glmer ~ comparison$gp) #slope = 0.73
+abline(fit, col="black")
+
+#GP seems to generally overestimate probabilities while Glmer underestimates
