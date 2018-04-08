@@ -187,9 +187,15 @@ View(comparison) #compares glmer and gp methods. Shows demographic group associa
 ###plots to figure out where the problems arise comparing the two groups###
 plot(seq(from = 0, to = .5, by = .0125), seq(from = 0, to = .5, by = .0125), xlab = "GP", ylab = "Glmer", type = "n") #by ethnicity
 points(comparison$gp[comparison$eth == 1], comparison$glmer[comparison$eth == 1], col = "red", pch = 19)
+abline(lm(comparison$glmer[comparison$eth == 1] ~ comparison$gp[comparison$eth == 1]), col="red")
 points(comparison$gp[comparison$eth == 2], comparison$glmer[comparison$eth == 2], col = "yellow", pch = 19)
+abline(lm(comparison$glmer[comparison$eth == 2] ~ comparison$gp[comparison$eth == 2]), col="yellow")
 points(comparison$gp[comparison$eth == 3], comparison$glmer[comparison$eth == 3], col = "green", pch = 19)
+abline(lm(comparison$glmer[comparison$eth == 3] ~ comparison$gp[comparison$eth == 3]), col="green")
 points(comparison$gp[comparison$eth == 4], comparison$glmer[comparison$eth == 4], col = "black", pch = 19) 
+abline(lm(comparison$glmer[comparison$eth == 4] ~ comparison$gp[comparison$eth == 4]), col="black")
+
+abline(lm(comparison$glmer ~ comparison$gp), col="blue")
 
 plot(seq(from = 0, to = .5, by = .0125), seq(from = 0, to = .5, by = .0125), type = "n") #by sex
 points(comparison$gp[sex == 1], comparison$glmer[sex == 1], col = "blue", pch = 19)
