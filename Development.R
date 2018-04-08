@@ -22,6 +22,13 @@ vote_data = read.delim("votingdata.dat") #read in dataset
 ### recoding dataset for analysis
 vote_data = na.exclude(vote_data) #cleaning of all missing data
 vote_data <- vote_data[!(vote_data$stt==12),] #removal of Hawaii
+# based on variable values
+test1 <- vote_data[ which(vote_data$stt==13), ]
+View(test1)
+?apply
+if(vote_data$stt > 12) {
+  vote_data$stt <- vote_data$stt - 1
+}
 state.f<-factor(vote_data$stt)
 dummies<-model.matrix(~state.f)
 vote_data<-cbind(vote_data, dummies)
@@ -45,20 +52,17 @@ vote_data$adv_degree <- ifelse(vote_data$edu==5, c(1), c(0))
 vote_data$mar<-ifelse(vote_data$mar==1, c(1), c(0)) #recode married to 0 1
 vote_data$kid<-ifelse(vote_data$kid==1, c(1), c(0)) #recode kid to 0 1 
 
-# vote_data$WM<-ifelse(vote_data$white==1 & vote_data$man==1, c(1), c(0)) #White Male combined variable
-# vote_data$WF<-ifelse(vote_data$white==1 & vote_data$man==0, c(1), c(0)) #White female combined variable 
-# vote_data$NWM<-ifelse(vote_data$white==0 & vote_data$man==1, c(1), c(0)) #Nonwhite Male combined variable 
-# vote_data$NWF<-ifelse(vote_data$white==0 & vote_data$man==0, c(1), c(0)) #Nonwhite female combined variable 
-
 votedata25<-subset(vote_data, vote_data$state.f25==1) #using only 25th state for now - Mississippi
 votedata3<-subset(vote_data, vote_data$state.f3==1) #using only 3rd state - Arizona
 votedata22<-subset(vote_data, vote_data$state.f22==1) #Massachusetts
 
 
-#using 
+#using
 vote.df25<-as.data.frame(votedata25) #Mississippi
 vote.df3<-as.data.frame(votedata3) #Arizona
 vote.df22<-as.data.frame(votedata22) #Massachusetts
+vote.df<-as.data.frame(vote_data) # all 50 states
+
 #vote.df25$sex = as.factor(vote.df25$sex)
 #vote.df25$edu = as.factor(vote.df25$edu)
 #vote.df25$eth = as.factor(vote.df25$eth) #changing them to factors DOES NOT WORK
@@ -68,6 +72,7 @@ vote.df22<-as.data.frame(votedata22) #Massachusetts
 output_miss<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df25, family = binomial)
 output_ariz<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df3, family = binomial)
 output_mass<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df22, family = binomial)
+output_all<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df, family = binomial)
 
 #make a fake dataset for each unique demographic combination 
 eth = c(rep(1,10), rep(2,10), rep(3,10), rep(4,10))
