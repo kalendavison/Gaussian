@@ -181,4 +181,8 @@ comparison$predictions_mass = NULL
 View(comparison) #compares glmer and gp methods. Shows demographic group associated with each prediction.
 
 ###plots to figure out where the problems arise comparing the two groups###
-plot(comparison$gp, comparison$glmer)
+plot(seq(from = 0, to = .5, by = .0125), 0:40, type = "n") #doesn't work and will fix later
+points(comparison$gp[eth == 1], comparison$glmer[eth == 1], col = "orange", pch = 19)
+points(comparison$gp[eth == 2], comparison$glmer[eth == 2], col = "red", pch = 19)
+points(comparison$gp[eth == 3], comparison$glmer[eth == 3], col = "green", pch = 19)
+points(comparison$gp[eth == 4], comparison$glmer[eth == 4], col = "blue", pch = 19) #ethnicity
