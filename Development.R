@@ -226,3 +226,5 @@ abline(lm(comparison$glmer[comparison$edu==5] ~ comparison$gp[comparison$edu==5]
 
 fit<-lm(comparison$glmer ~ comparison$gp) #slope = 0.73
 abline(fit, col="black")
+
+#GP seems to generally overestimate probabilities while Glmer underestimates
