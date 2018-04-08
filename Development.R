@@ -169,10 +169,11 @@ gp_predictions = data.frame(gp_predictions)
 gp_predictions = gp_predictions[order(gp_predictions$Freq),]
 gp_predictions
 
-comparison = data.frame(gp_predictions$gp_predictions, glmer_predictions$glmer_predictions, demographic.prediction.MA) #direct comparison between two methods. The predictions are sometimes close and sometimes not.
+ordered = demographic.prediction.MA[order(demographic.prediction.MA$predictions_mass),]
+comparison = data.frame(gp_predictions$gp_predictions, glmer_predictions$glmer_predictions, ordered) #direct comparison between two methods. The predictions are sometimes close and sometimes not.
 comparison = comparison[order(comparison$gp_predictions),]
-View(comparison)
-#the first two columns match up; however, we don't know what demographic group they pertain to. So I 
-#attached our previous gp predictions across the fake.dataset. We need to figure out a way to 
-#reorganize the data so that there are only five columns that match up: gp_predictions, glmer_predictions, eth, sex, edu
+comparison$gp_predictions.gp_predictions = NULL
+comparison = comparison[order(comparison$glmer_predictions.glmer_predictions),]
+View(comparison) #compares glmer and gp methods. Shows demographic group associated with each prediction.
+
 
