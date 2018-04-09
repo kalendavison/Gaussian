@@ -11,10 +11,13 @@ library(devtools)
 library(arm)
 library(gpe)
 library(lme4)
+?lme4
+?gp
+?display
 
 # Set working directory
 setwd("/Users/kalendavison/Desktop/Applied Statistical Programming/GitHub/Gaussian")
-setwd("/Users/isdav/Documents/GitHub/Gaussian")
+setwd("/Users/Ian Davis/Documents/GitHub/Gaussian")
 setwd("/Users/noahbardash/Documents/GitHub/Gaussian")
 
 # Reading in & processing of data
@@ -66,12 +69,28 @@ vote.df<-as.data.frame(vote_data) # Full dataset cast as dataframe
 ### GP FUNCTION ###
 
 
-<<<<<<< HEAD
+
 # Run GP function for MS, AZ, MA, full dataset
 output_miss<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df23, family = binomial)
 output_ariz<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df2, family = binomial)
 output_mass<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df20, family = binomial)
+rm(list=setdiff(ls(), "vote.df")) #put this in to potentially help with the other function; doesnt work 
 output_all<-gp(formula = rvote~rbf(c("sex", "edu", "eth", "stt")), data = vote.df, family = binomial)
+
+### THIS IS THE RESPONSE I GET FROM RUNNING THE ABOVE CODE ON MY MACHINE (DON'T RUN THIS): 
+
+> output_all<-gp(formula = rvote~rbf(c("sex", "edu", "eth", "stt")), data = vote.df, family = binomial)
+Error: cannot allocate vector of size 70.5 Gb
+In addition: Warning messages:
+  1: In fields::rdist(x, y) :
+  Reached total allocation of 16283Mb: see help(memory.size)
+2: In fields::rdist(x, y) :
+  Reached total allocation of 16283Mb: see help(memory.size)
+3: In fields::rdist(x, y) :
+  Reached total allocation of 16283Mb: see help(memory.size)
+4: In fields::rdist(x, y) :
+  Reached total allocation of 16283Mb: see help(memory.size)
+
 
 # Creation of a fake dataset for each unique demographic combination 
 eth = c(rep(1,10), rep(2,10), rep(3,10), rep(4,10))
