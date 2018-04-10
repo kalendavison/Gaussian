@@ -66,7 +66,6 @@ vote.df<-as.data.frame(vote_data) # Full dataset cast as dataframe
 ### GP FUNCTION ###
 
 
-<<<<<<< HEAD
 # Run GP function for MS, AZ, MA, full dataset
 output_miss<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df23, family = binomial)
 output_ariz<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df2, family = binomial)
@@ -98,7 +97,7 @@ plot(demographic.prediction.AZ$predictions_ariz)
 plot(demographic.prediction.MA$predictions_mass)
 
 
-### LMER FUNCTION ###
+### GLMER FUNCTION ###
 
 
 # Make a fake dataset for each unique demographic combination using dummy variables
@@ -142,12 +141,6 @@ glmer_predictions = glmer_predictions[order(glmer_predictions$Freq),] #order dat
 glmer_predictions
 
 #compare to
-gptest = gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df20, family = binomial)
-gp_predictions<-predict(gptest, vote.df20, type="response")
-gp_predictions = round(gp_predictions, digits = 7)
-gp_predictions = as.data.frame(table(gp_predictions))
-gp_predictions = data.frame(gp_predictions)
-gp_predictions = gp_predictions[order(gp_predictions$Freq),]
 gptest = gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df20, family = binomial)
 gp_predictions<-predict(gptest, vote.df20, type="response") #run gp through whole data set to get frequencies
 gp_predictions = round(gp_predictions, digits = 7) #round for clear comparison
