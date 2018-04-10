@@ -68,11 +68,6 @@ vote.df<-as.data.frame(vote_data) # Full dataset cast as dataframe
 
 ### GP FUNCTION ###
 
-
-<<<<<<< HEAD
-=======
-
->>>>>>> f2d248af94843991bfafef67b02cd7672ea4e7e1
 # Run GP function for MS, AZ, MA, full dataset
 output_miss<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df23, family = binomial)
 output_ariz<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df2, family = binomial)
