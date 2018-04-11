@@ -205,3 +205,14 @@ abline(fit, col="black")
 
 #GP seems to generally overestimate probabilities while Glmer underestimates
 
+
+
+#function takes in as arguments state number and desired sample size.It returns a data set 
+# of random observations of the specified state and size.
+sample_selector = function(state_number, sample_n){ 
+  group = vote_data[vote_data$stt == state_number, 1:9]
+  output = group[sample(1:length(group$stt), sample_n),]
+  View(output)
+}
+sample_selector(37, 300)
+
