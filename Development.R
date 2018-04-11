@@ -200,6 +200,13 @@ abline(fit, col="black")
 # of random observations of the specified state and size.
 
 sample_selector = function(state_number, sample_n){ 
+  vote_data = read.delim("votingdata.dat") # Read in dataset from .dat file
+  vote_data = na.exclude(vote_data) # Remove all entries with missing data
+  
+  vote_data <- vote_data[!(vote_data$stt==12),] # Removal of Hawaii entry from dataset
+  vote_data$stt <- ifelse(vote_data$stt > 2, vote_data$stt - 1, vote_data$stt) # Recode stt value for states alphabetically after AK
+  vote_data$stt <- ifelse(vote_data$stt > 12, vote_data$stt - 1, vote_data$stt)
+  
   group = vote_data[vote_data$stt == state_number, 1:9]
   sample_data = group[sample(1:length(group$stt), sample_n),]
   sample_data = sample_data[,c("rvote", "eth", "sex", "edu")]
@@ -217,14 +224,7 @@ sample_selector = function(state_number, sample_n){
   gp_predictions = as.data.frame(table(gp_predictions)) 
   gp_predictions = gp_predictions[order(gp_predictions$Freq),]
   
-  var1 = sample_data$eth
-  var1 = as.factor(var1)
-  var2 = sample_data$sex
-  var2 = as.factor(var2)
-  var3 = sample_data$edu
-  var3 = as.factor(var3)
-  
-  glmer_output = glmer(formula = rvote ~ (1|var1) + (1|var2) + (1|var3), data = sample_data, family = binomial) 
+  glmer_output = glmer(formula = rvote ~ (1|(as.factor(sample_data$eth))) + (1|(as.factor(sample_data$sex))) + (1|(as.factor(sample_data$edu))), data = sample_data, family = binomial) 
   glmer_predictions = predict(glmer_output, newdata = sample_data, type="response")
   glmer_predictions = as.data.frame(table(glmer_predictions)) 
   glmer_predictions = glmer_predictions[order(glmer_predictions$Freq),] 
@@ -236,12 +236,12 @@ sample_selector = function(state_number, sample_n){
   comparison = comparison[order(comparison$glmer_predictions.glmer_predictions),] #reorder 
   comparison$glmer = comparison$glmer_predictions.glmer_predictions #rename for sense
   comparison$glmer_predictions.glmer_predictions = NULL #no longer needed (just renamed)
-  comparison$gp = comparison$demographic_predictions #rename for sense
-  comparison$demographic_predictions = NULL #no longer needed (just renamed)
+  comparison$gp = comparison$gp_predict #rename for sense
+  comparison$gp_predict = NULL #no longer needed (just renamed)
   comparison$glmer = as.vector(comparison$glmer) #change from a factor to numeric for plotting purposes
   View(comparison)
 }
 
-sample_selector(20, 300) #Massachusetts, take out 300 observations and make a new data frame
+sample_selector(state_number = 20, sample_n = 2000) #Massachusetts, take out 300 observations and make a new data frame
 
 
