@@ -243,5 +243,5 @@ sample_selector = function(state_number, sample_n){
 }
 
 sample_selector(state_number = 20, sample_n = 2000) #Massachusetts, take out 300 observations and make a new data frame
-
+#it almost works. It's just something about the glmer output
 
