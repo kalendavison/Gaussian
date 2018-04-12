@@ -1,14 +1,13 @@
 # Clear global environment
 rm(list = ls())
 
-library(devtools)
-
 # Installation of necessary packages
 install_github('goldingn/gpe')
 install.packages("arm")
 install.packages('lme4')
 
 # Loading of necessary packages
+library(devtools)
 library(arm)
 library(gpe)
 library(lme4)
@@ -18,7 +17,7 @@ library(lme4)
 
 # Set working directory
 setwd("/Users/kalendavison/Desktop/Applied Statistical Programming/GitHub/Gaussian")
-setwd("/Users/isdav/Documents/GitHub/Gaussian")
+setwd("/Users/Ian Davis/Documents/GitHub/Gaussian")
 setwd("/Users/noahbardash/Documents/GitHub/Gaussian")
 
 # Reading in & processing of data
@@ -71,13 +70,9 @@ vote.df<-as.data.frame(vote_data) # Full dataset cast as dataframe
 
 # Run GP function for MS, AZ, MA, full dataset
 output_miss<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df23, family = binomial)
-
-output_miss<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df23, family = binomial, weights = weight_vector)
-
 output_ariz<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df2, family = binomial)
 output_mass<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df20, family = binomial)
 rm(list=setdiff(ls(), "vote.df")) #put this in to potentially help with the other function; doesnt work 
-output_all<-gp(formula = rvote~rbf(c("sex", "edu", "eth", "stt")), data = vote.df, family = binomial)
 
 # Creation of a fake dataset for each unique demographic combination 
 eth = c(rep(1,10), rep(2,10), rep(3,10), rep(4,10))
@@ -229,7 +224,14 @@ sample_selector = function(state_number, sample_n){
   gp_predictions = as.data.frame(table(gp_predictions)) 
   gp_predictions = gp_predictions[order(gp_predictions$Freq),]
   
-  glmer_output = glmer(formula = rvote ~ (1|(as.factor(sample_data$eth))) + (1|(as.factor(sample_data$sex))) + (1|(as.factor(sample_data$edu))), data = sample_data, family = binomial) 
+  var1 = sample_data$eth
+  sample_data$var1 = as.factor(var1)
+  var2 = sample_data$sex
+  sample_data$var2 = as.factor(var2)
+  var3 = sample_data$edu
+  sample_data$var3 = as.factor(var3)
+  
+  glmer_output = glmer(formula = rvote ~ (1|var1) + (1|var2) + (1|var3), data = sample_data, family = binomial) 
   glmer_predictions = predict(glmer_output, newdata = sample_data, type="response")
   glmer_predictions = as.data.frame(table(glmer_predictions)) 
   glmer_predictions = glmer_predictions[order(glmer_predictions$Freq),] 
