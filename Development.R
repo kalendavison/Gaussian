@@ -70,6 +70,19 @@ vote.df<-as.data.frame(vote_data) # Full dataset cast as dataframe
 
 # Run GP function for MS, AZ, MA, full dataset
 output_miss<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df23, family = binomial)
+weight_vector <- rep(5, 916)
+View(vote.df23)
+class(vote.df23)
+vote.df23 <- as.data.frame(vote.df23)
+View(vote.df23)
+for(i in weight_vector) {
+  if(vote.df23eth[i] == 2){weight_vector[i] = 2}
+  else{weight_vector[i] = 1}
+}
+weight_vector
+
+output_miss<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df23, family = binomial, weights = weight_vector)
+
 output_ariz<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df2, family = binomial)
 output_mass<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df20, family = binomial)
 rm(list=setdiff(ls(), "vote.df")) #put this in to potentially help with the other function; doesnt work 
