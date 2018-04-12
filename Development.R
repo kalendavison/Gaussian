@@ -1,13 +1,14 @@
 # Clear global environment
 rm(list = ls())
 
+library(devtools)
+
 # Installation of necessary packages
 install_github('goldingn/gpe')
 install.packages("arm")
 install.packages('lme4')
 
 # Loading of necessary packages
-library(devtools)
 library(arm)
 library(gpe)
 library(lme4)
@@ -17,7 +18,7 @@ library(lme4)
 
 # Set working directory
 setwd("/Users/kalendavison/Desktop/Applied Statistical Programming/GitHub/Gaussian")
-setwd("/Users/Ian Davis/Documents/GitHub/Gaussian")
+setwd("/Users/isdav/Documents/GitHub/Gaussian")
 setwd("/Users/noahbardash/Documents/GitHub/Gaussian")
 
 # Reading in & processing of data
@@ -78,7 +79,7 @@ output_all<-gp(formula = rvote~rbf(c("sex", "edu", "eth", "stt")), data = vote.d
 ### THIS IS THE RESPONSE I GET FROM RUNNING THE ABOVE CODE ON MY MACHINE (DON'T RUN THIS): 
 
 > output_all<-gp(formula = rvote~rbf(c("sex", "edu", "eth", "stt")), data = vote.df, family = binomial)
-Error: cannot allocate vector of size 70.5 Gb
+Error: cannot allocate vector of size 70.5 Gb (This is the only error I get on my laptop)
 In addition: Warning messages:
   1: In fields::rdist(x, y) :
   Reached total allocation of 16283Mb: see help(memory.size)
