@@ -74,6 +74,7 @@ output_miss<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df23, f
 output_ariz<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df2, family = binomial)
 output_mass<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df20, family = binomial)
 rm(list=setdiff(ls(), "vote.df")) #put this in to potentially help with the other function; doesnt work 
+<<<<<<< HEAD
 output_all<-gp(formula = rvote~rbf(c("sex", "edu", "eth", "stt")), data = vote.df, family = binomial)
 
 ### THIS IS THE RESPONSE I GET FROM RUNNING THE ABOVE CODE ON MY MACHINE (DON'T RUN THIS): 
@@ -90,6 +91,8 @@ In addition: Warning messages:
 4: In fields::rdist(x, y) :
   Reached total allocation of 16283Mb: see help(memory.size)
 
+=======
+>>>>>>> 8d04da5b310a2411eebd4902747da46d4638e62c
 
 # Creation of a fake dataset for each unique demographic combination 
 eth = c(rep(1,10), rep(2,10), rep(3,10), rep(4,10))
@@ -109,11 +112,6 @@ demographic.prediction.AZ = data.frame(predictions_ariz, fake.dataset)
 View(demographic.prediction.AZ) 
 demographic.prediction.MA = data.frame(predictions_mass, fake.dataset)
 View(demographic.prediction.MA)
-
-# Plot likelihood of R-vote by index of fake dataset
-plot(demographic.prediction.MS$predictions_miss) #MS voting patterns are highly related to ethnicity
-plot(demographic.prediction.AZ$predictions_ariz)
-plot(demographic.prediction.MA$predictions_mass)
 
 
 ### GLMER FUNCTION ###
@@ -145,12 +143,6 @@ var3 = as.factor(var3)
 
 
 check = glmer(formula = rvote ~ (1|var1) + (1|var2) + (1|var3), data = vote.df20, family = binomial) 
-display(check) 
-
-glmer_predictions = predict(check, newdata = vote.df20, type="response")
-glmer_predictions = round(glmer_predictions, digits = 7)
-glmer_predictions = as.data.frame(table(glmer_predictions))
-check = glmer(formula = rvote ~ (1|var1) + (1|var2) + (1|var3), data = vote.df20, family = binomial)  #run glmer function
 display(check) 
 
 glmer_predictions = predict(check, newdata = vote.df20, type="response")
@@ -221,3 +213,55 @@ fit<-lm(comparison$glmer ~ comparison$gp) #slope = 0.73
 abline(fit, col="black")
 
 #GP seems to generally overestimate probabilities while Glmer underestimates
+
+
+
+#function takes in as arguments state number and desired sample size.It returns a data set 
+# of random observations of the specified state and size.
+
+sample_selector = function(state_number, sample_n){ 
+  vote_data = read.delim("votingdata.dat") # Read in dataset from .dat file
+  vote_data = na.exclude(vote_data) # Remove all entries with missing data
+  
+  vote_data <- vote_data[!(vote_data$stt==12),] # Removal of Hawaii entry from dataset
+  vote_data$stt <- ifelse(vote_data$stt > 2, vote_data$stt - 1, vote_data$stt) # Recode stt value for states alphabetically after AK
+  vote_data$stt <- ifelse(vote_data$stt > 12, vote_data$stt - 1, vote_data$stt)
+  
+  group = vote_data[vote_data$stt == state_number, 1:9]
+  sample_data = group[sample(1:length(group$stt), sample_n),]
+  sample_data = sample_data[,c("rvote", "eth", "sex", "edu")]
+  
+  gp_output<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = sample_data, family = binomial)
+  gp_predictions<-predict(gp_output, sample_data, type="response") 
+  
+  eth = c(rep(1,10), rep(2,10), rep(3,10), rep(4,10))
+  sex = c(rep((c(rep(1,5), rep(2,5))), 4))
+  edu = rep(1:5, 8)
+  fake.dataset = data.frame(eth, sex, edu)
+  gp_predict<-predict(gp_output, fake.dataset, type="response") 
+  demographic.predictions = data.frame(gp_predict, fake.dataset)
+  
+  gp_predictions = as.data.frame(table(gp_predictions)) 
+  gp_predictions = gp_predictions[order(gp_predictions$Freq),]
+  
+  glmer_output = glmer(formula = rvote ~ (1|(as.factor(sample_data$eth))) + (1|(as.factor(sample_data$sex))) + (1|(as.factor(sample_data$edu))), data = sample_data, family = binomial) 
+  glmer_predictions = predict(glmer_output, newdata = sample_data, type="response")
+  glmer_predictions = as.data.frame(table(glmer_predictions)) 
+  glmer_predictions = glmer_predictions[order(glmer_predictions$Freq),] 
+  
+  ordered = demographic.predictions[order(demographic.predictions$gp_predict),] #order gp by fake.dataset to later add to master comparison
+  comparison = data.frame(gp_predictions$gp_predictions, glmer_predictions$glmer_predictions, ordered) #to be cleaned to make sense
+  comparison = comparison[order(comparison$gp_predictions),] #order by gp_predictions to match methods
+  comparison$gp_predictions.gp_predictions = NULL #no longer necessary because added predictions_mass
+  comparison = comparison[order(comparison$glmer_predictions.glmer_predictions),] #reorder 
+  comparison$glmer = comparison$glmer_predictions.glmer_predictions #rename for sense
+  comparison$glmer_predictions.glmer_predictions = NULL #no longer needed (just renamed)
+  comparison$gp = comparison$gp_predict #rename for sense
+  comparison$gp_predict = NULL #no longer needed (just renamed)
+  comparison$glmer = as.vector(comparison$glmer) #change from a factor to numeric for plotting purposes
+  View(comparison)
+}
+
+sample_selector(state_number = 20, sample_n = 2000) #Massachusetts, take out 300 observations and make a new data frame
+#it almost works. It's just something about the glmer output
+
