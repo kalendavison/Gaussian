@@ -35,7 +35,7 @@ sample_selector = function(state_number, sample_n, plots){
   sample_data = group[sample(1:length(group$stt), sample_n),]
   sample_data = sample_data[,c("rvote", "eth", "sex", "edu")]
   
-  gp_output<-gp(formula = rvote~rbf(columns = c("sex", "edu", "eth"), l = c(.3, .15, 2.2)), data = sample_data, family = binomial)
+  gp_output<-gp(formula = rvote~rbf(columns = c("sex", "edu", "eth"), l = c(.3, .15, 2.5)), data = sample_data, family = binomial)
   gp_predictions<-predict(gp_output, sample_data, type="response") 
   
   eth = c(rep(1,10), rep(2,10), rep(3,10), rep(4,10))
@@ -125,7 +125,8 @@ sample_selector = function(state_number, sample_n, plots){
 
 sample_selector(state_number = 20, sample_n = 2000, plots = 0) #Mass without plots 
 sample_selector(state_number = 20, sample_n = 2000, plots = 1) #Mass with plots, returns regression coefficient
-
+sample_selector(state_number = 2, sample_n = 1700, plots = 1) #Arizona with plots
+sample_selector(state_number = 4, sample_n = 1950, plots = 1) #california with plots
 
 # Reading in & processing of data
 vote_data = read.delim("votingdata.dat") # Read in dataset from .dat file
@@ -136,6 +137,8 @@ vote_data <- vote_data[!(vote_data$stt==12),] # Removal of Hawaii entry from dat
 vote_data$stt <- ifelse(vote_data$stt > 2, vote_data$stt - 1, vote_data$stt) # Recode stt value for states alphabetically after AK
 vote_data$stt <- ifelse(vote_data$stt > 12, vote_data$stt - 1, vote_data$stt) # Recode stt values for states alphabetically after HI
 # 48 contiguous states + DC now numbered 1-49 in alphabetical order
+
+table(vote_data$stt)
 
 # Creation of dummy variables for each state
 state.f<-factor(vote_data$stt)
