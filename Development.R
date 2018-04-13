@@ -35,7 +35,7 @@ sample_selector = function(state_number, sample_n, plots){
   sample_data = group[sample(1:length(group$stt), sample_n),]
   sample_data = sample_data[,c("rvote", "eth", "sex", "edu")]
   
-  gp_output<-gp(formula = rvote~rbf(columns = c("sex", "edu", "eth")), data = sample_data, family = binomial)
+  gp_output<-gp(formula = rvote~rbf(columns = c("sex", "edu", "eth"), l = c(1.2, .25, 3)), data = sample_data, family = binomial)
   gp_predictions<-predict(gp_output, sample_data, type="response") 
   
   eth = c(rep(1,10), rep(2,10), rep(3,10), rep(4,10))
@@ -69,7 +69,8 @@ sample_selector = function(state_number, sample_n, plots){
   comparison$glmer_predictions.glmer_predictions = NULL #no longer needed (just renamed)
   comparison$gp = comparison$gp_predict #rename for sense
   comparison$gp_predict = NULL #no longer needed (just renamed)
-  comparison$glmer = as.vector(comparison$glmer) #change from a factor to numeric for plotting purposes
+  comparison$glmer = (as.numeric(levels(comparison$glmer))) #change from a factor to numeric for plotting purposes
+  comparison$difference =  comparison$glmer - as.vector(comparison$gp)
   
   if (plots == 1){
   par(mfrow=c(2,2))
@@ -109,6 +110,8 @@ sample_selector = function(state_number, sample_n, plots){
   abline(lm(comparison$glmer[comparison$edu==4] ~ comparison$gp[comparison$edu==4]), col="yellow") # slope = 0.65
   points(comparison$gp[comparison$edu == 5], comparison$glmer[comparison$edu == 5], col = "red", pch = 19)
   abline(lm(comparison$glmer[comparison$edu==5] ~ comparison$gp[comparison$edu==5]), col="red") # slope = 1.53
+  
+  plot(comparison$glmer, comparison$difference, main = "Glmer versus difference in predictions", xlab ="Glmer", ylab ="Difference")
   
   fit<-lm(comparison$glmer ~ comparison$gp) #slope = 0.73
   abline(fit, col="black")
@@ -160,4 +163,5 @@ vote_data$adv_degree <- ifelse(vote_data$edu==5, c(1), c(0))
 vote_data$mar<-ifelse(vote_data$mar==1, c(1), c(0)) # Recode married to 0 1
 vote_data$kid<-ifelse(vote_data$kid==1, c(1), c(0)) # Recode kid to 0 1 
 
-
+state_number =20
+sample_n = 2000
