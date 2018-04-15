@@ -25,8 +25,9 @@ sample_selector = function(state_number, sample_n, plots){
   vote_data = na.exclude(vote_data) # Remove all entries with missing data
   
   vote_data <- vote_data[!(vote_data$stt==12),] # Removal of Hawaii entry from dataset
-  vote_data$stt <- ifelse(vote_data$stt > 2, vote_data$stt - 1, vote_data$stt) # Recode stt value for states alphabetically after AK
   vote_data$stt <- ifelse(vote_data$stt > 12, vote_data$stt - 1, vote_data$stt)
+  vote_data$stt <- ifelse(vote_data$stt > 2, vote_data$stt - 1, vote_data$stt) # Recode stt value for states alphabetically after AK
+  
   
   group = vote_data[vote_data$stt == state_number, 1:9]
   sample_data = group[sample(1:length(group$stt), sample_n),]
@@ -132,8 +133,8 @@ vote_data = na.exclude(vote_data) # Remove all entries with missing data
 
 # Clean dataset: state 2 (AK) has no entries and state 12 (HI) only has one. No statistically useful data here
 vote_data <- vote_data[!(vote_data$stt==12),] # Removal of Hawaii entry from dataset
-vote_data$stt <- ifelse(vote_data$stt > 2, vote_data$stt - 1, vote_data$stt) # Recode stt value for states alphabetically after AK
 vote_data$stt <- ifelse(vote_data$stt > 12, vote_data$stt - 1, vote_data$stt) # Recode stt values for states alphabetically after HI
+vote_data$stt <- ifelse(vote_data$stt > 2, vote_data$stt - 1, vote_data$stt) # Recode stt value for states alphabetically after AK
 # 48 contiguous states + DC now numbered 1-49 in alphabetical order
 
 table(vote_data$stt)
