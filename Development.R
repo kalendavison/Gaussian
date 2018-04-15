@@ -165,7 +165,3 @@ vote_data$adv_degree <- ifelse(vote_data$edu==5, c(1), c(0))
 vote_data$mar<-ifelse(vote_data$mar==1, c(1), c(0)) # Recode married to 0 1
 vote_data$kid<-ifelse(vote_data$kid==1, c(1), c(0)) # Recode kid to 0 1 
 
-state_number =20
-sample_n = 2000
-plots = 0
-
