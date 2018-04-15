@@ -71,11 +71,9 @@ vote.df<-as.data.frame(vote_data) # Full dataset cast as dataframe
 
 # Run GP function for MS, AZ, MA, full dataset
 output_miss<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df23, family = binomial)
-
-output_miss<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df23, family = binomial, weights = weight_vector)
-
 output_ariz<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df2, family = binomial)
 output_mass<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = vote.df20, family = binomial)
+output_mass2<-gp(formula = rvote~rbf(c("sex", "edu", "eth"), sigma = 1, l = c(1,1,2)), data = vote.df20, family = binomial)
 rm(list=setdiff(ls(), "vote.df")) #put this in to potentially help with the other function; doesnt work 
 output_all<-gp(formula = rvote~rbf(c("sex", "edu", "eth", "stt")), data = vote.df, family = binomial)
 
@@ -218,7 +216,7 @@ sample_selector = function(state_number, sample_n){
   
   gp_output<-gp(formula = rvote~rbf(c("sex", "edu", "eth")), data = sample_data, family = binomial)
   gp_predictions<-predict(gp_output, sample_data, type="response") 
-  
+  ?rbf
   eth = c(rep(1,10), rep(2,10), rep(3,10), rep(4,10))
   sex = c(rep((c(rep(1,5), rep(2,5))), 4))
   edu = rep(1:5, 8)
