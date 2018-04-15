@@ -17,11 +17,8 @@ library(lme4)
 
 # Set working directory
 setwd("/Users/kalendavison/Desktop/Applied Statistical Programming/GitHub/Gaussian")
-setwd("/Users/Ian Davis/Documents/GitHub/Gaussian")
+setwd("/Users/isdav/Documents/GitHub/Gaussian")
 setwd("/Users/noahbardash/Documents/GitHub/Gaussian")
-
-#function takes in as arguments state number and desired sample size. It returns a data set 
-# of random observations of the specified state and size. Plot = 1 includes plots; plots = 0 has no plots.
 
 sample_selector = function(state_number, sample_n, plots){ 
   vote_data = read.delim("votingdata.dat") # Read in dataset from .dat file
@@ -35,9 +32,13 @@ sample_selector = function(state_number, sample_n, plots){
   sample_data = group[sample(1:length(group$stt), sample_n),]
   sample_data = sample_data[,c("rvote", "eth", "sex", "edu")]
   
+<<<<<<< HEAD
   gp_output<-gp(formula = rvote~rbf(columns = c("sex", "edu", "eth"), l = c(.3,.15, 2.5)), data = sample_data, family = binomial)
+=======
+  gp_output<-gp(formula = rvote~rbf(columns = c("sex", "edu", "eth"), l = c(.5, .15, 2)), data = sample_data, family = binomial)
+>>>>>>> 94d961833b746c4c79ad8a1f397b9aae8a493d73
   gp_predictions<-predict(gp_output, sample_data, type="response") 
-  
+  ?rbf
   eth = c(rep(1,10), rep(2,10), rep(3,10), rep(4,10))
   sex = c(rep((c(rep(1,5), rep(2,5))), 4))
   edu = rep(1:5, 8)
@@ -129,6 +130,12 @@ sample_selector(state_number = 2, sample_n = 1700, plots = 1) #Arizona with plot
 sample_selector(state_number = 4, sample_n = 1950, plots = 1) #california with plots
 
 
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> 94d961833b746c4c79ad8a1f397b9aae8a493d73
 # Reading in & processing of data
 vote_data = read.delim("votingdata.dat") # Read in dataset from .dat file
 vote_data = na.exclude(vote_data) # Remove all entries with missing data
@@ -166,7 +173,10 @@ vote_data$adv_degree <- ifelse(vote_data$edu==5, c(1), c(0))
 # ((possibly working with these variables later))
 vote_data$mar<-ifelse(vote_data$mar==1, c(1), c(0)) # Recode married to 0 1
 vote_data$kid<-ifelse(vote_data$kid==1, c(1), c(0)) # Recode kid to 0 1 
+<<<<<<< HEAD
 
 state_number =20
 sample_n = 2000
 plots = 0
+=======
+>>>>>>> 94d961833b746c4c79ad8a1f397b9aae8a493d73
