@@ -17,7 +17,7 @@ library(lme4)
 
 # Set working directory
 setwd("/Users/kalendavison/Desktop/Applied Statistical Programming/GitHub/Gaussian")
-setwd("/Users/Ian Davis/Documents/GitHub/Gaussian")
+setwd("/Users/isdav/Documents/GitHub/Gaussian")
 setwd("/Users/noahbardash/Documents/GitHub/Gaussian")
 
 sample_selector = function(state_number, sample_n, plots){ 
