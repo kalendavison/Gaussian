@@ -32,7 +32,11 @@ sample_selector = function(state_number, sample_n, plots){
   sample_data = group[sample(1:length(group$stt), sample_n),]
   sample_data = sample_data[,c("rvote", "eth", "sex", "edu")]
   
+<<<<<<< HEAD
   gp_output<-gp(formula = rvote~rbf(columns = c("sex", "edu", "eth"), l = c(.5, .1, 3)), data = vote_data, family = binomial)
+=======
+  gp_output<-gp(formula = rvote~rbf(columns = c("sex", "edu", "eth"), l = c(.6, .2, 3)), data = sample_data, family = binomial)
+>>>>>>> 8a85822b9bd5546f422a6ef32f5e77b3cad38ca4
   gp_predictions<-predict(gp_output, sample_data, type="response") 
   eth = c(rep(1,10), rep(2,10), rep(3,10), rep(4,10))
   sex = c(rep((c(rep(1,5), rep(2,5))), 4))
@@ -169,3 +173,11 @@ vote_data$adv_degree <- ifelse(vote_data$edu==5, c(1), c(0))
 vote_data$mar<-ifelse(vote_data$mar==1, c(1), c(0)) # Recode married to 0 1
 vote_data$kid<-ifelse(vote_data$kid==1, c(1), c(0)) # Recode kid to 0 1 
 
+
+#doing well for which groups, observed vs actual
+#which one does better out of sample
+#there should be another set of random effects by state
+
+#1) out of sample evaluation
+#2) include states as covariates (take a few of the smaller states)
+# if we really want to dig into this, make a dummy variable for every demographic subgroup
