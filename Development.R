@@ -32,11 +32,7 @@ sample_selector = function(state_number, sample_n, plots){
   sample_data = group[sample(1:length(group$stt), sample_n),]
   sample_data = sample_data[,c("rvote", "eth", "sex", "edu")]
   
-<<<<<<< HEAD
-  gp_output<-gp(formula = rvote~rbf(columns = c("sex", "edu", "eth"), l = c(.5, .1, 3)), data = vote_data, family = binomial)
-=======
-  gp_output<-gp(formula = rvote~rbf(columns = c("sex", "edu", "eth"), l = c(.6, .2, 3)), data = sample_data, family = binomial)
->>>>>>> 8a85822b9bd5546f422a6ef32f5e77b3cad38ca4
+  gp_output<-gp(formula = rvote~rbf(columns = c("sex", "edu", "eth"), l = c(.5, .1, 3)), data = group, family = binomial)
   gp_predictions<-predict(gp_output, sample_data, type="response") 
   eth = c(rep(1,10), rep(2,10), rep(3,10), rep(4,10))
   sex = c(rep((c(rep(1,5), rep(2,5))), 4))
