@@ -32,11 +32,7 @@ sample_selector = function(state_number, sample_n, plots){
   sample_data = group[sample(1:length(group$stt), sample_n),]
   sample_data = sample_data[,c("rvote", "eth", "sex", "edu")]
   
-<<<<<<< HEAD
-  gp_output<-gp(formula = rvote~rbf(columns = c("sex", "edu", "eth"), l = c(.5, .1, 3)), data = vote_data, family = binomial)
-=======
-  gp_output<-gp(formula = rvote~rbf(columns = c("sex", "edu", "eth"), l = c(.6, .2, 3)), data = sample_data, family = binomial)
->>>>>>> 8a85822b9bd5546f422a6ef32f5e77b3cad38ca4
+  gp_output<-gp(formula = rvote~rbf(columns = c("sex", "edu", "eth"), l = c(.5, .1, 3)), data = group, family = binomial)
   gp_predictions<-predict(gp_output, sample_data, type="response") 
   eth = c(rep(1,10), rep(2,10), rep(3,10), rep(4,10))
   sex = c(rep((c(rep(1,5), rep(2,5))), 4))
@@ -46,18 +42,16 @@ sample_selector = function(state_number, sample_n, plots){
   demographic.predictions = data.frame(gp_predict, fake.dataset)
   
   gp_predictions = as.data.frame(table(gp_predictions)) 
-  
   gp_predictions = gp_predictions[order(gp_predictions$Freq),]
   
+  var1 = group$eth
+  group$var1 = as.factor(var1)
+  var2 = group$sex
+  group$var2 = as.factor(var2)
+  var3 = group$edu
+  group$var3 = as.factor(var3)
   
-  var1 = sample_data$eth
-  sample_data$var1 = as.factor(var1)
-  var2 = sample_data$sex
-  sample_data$var2 = as.factor(var2)
-  var3 = sample_data$edu
-  sample_data$var3 = as.factor(var3)
-  
-  glmer_output = glmer(formula = rvote ~ (1|var1) + (1|var2) + (1|var3), data = vote_data, family = binomial) 
+  glmer_output = glmer(formula = rvote ~ (1|var1) + (1|var2) + (1|var3), data = group, family = binomial) 
   glmer_predictions = predict(glmer_output, newdata = sample_data, type="response")
   glmer_predictions = as.data.frame(table(glmer_predictions)) 
   glmer_predictions = glmer_predictions[order(glmer_predictions$Freq),] 
@@ -128,7 +122,7 @@ sample_selector = function(state_number, sample_n, plots){
 sample_selector(state_number = 20, sample_n = 2000, plots = 0) #Mass without plots 
 sample_selector(state_number = 20, sample_n = 100, plots = 1) #Mass with plots, returns regression coefficient
 sample_selector(state_number = 2, sample_n = 1700, plots = 1) #Arizona with plots
-sample_selector(state_number = 5, sample_n = 1600, plots = 1) #colorado with plots
+sample_selector(state_number = 5, sample_n = 1621, plots = 1) #colorado with plots
 sample_selector(state_number = 45, sample_n = 2000, plots = 1) #virginia with plots - not functioning at the moment
 #eg wisco, wash, va don't work - mismatched number of rows.
 # to account for this, create empty row in gp
