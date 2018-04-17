@@ -33,7 +33,7 @@ sample_selector = function(state_number, sample_n, plots){
   sample_data = group[sample(1:length(group$stt), sample_n),]
   sample_data = sample_data[,c("rvote", "eth", "sex", "edu")]
   
-  gp_output<-gp(formula = rvote~rbf(columns = c("sex", "edu", "eth"), l = c(.3, .15, 2.5)), data = sample_data, family = binomial)
+  gp_output<-gp(formula = rvote~rbf(columns = c("sex", "edu", "eth"), l = c(.5, .1, 3)), data = sample_data, family = binomial)
   gp_predictions<-predict(gp_output, sample_data, type="response") 
   eth = c(rep(1,10), rep(2,10), rep(3,10), rep(4,10))
   sex = c(rep((c(rep(1,5), rep(2,5))), 4))
@@ -123,7 +123,12 @@ sample_selector = function(state_number, sample_n, plots){
 sample_selector(state_number = 20, sample_n = 2000, plots = 0) #Mass without plots 
 sample_selector(state_number = 20, sample_n = 2000, plots = 1) #Mass with plots, returns regression coefficient
 sample_selector(state_number = 2, sample_n = 1700, plots = 1) #Arizona with plots
-sample_selector(state_number = 4, sample_n = 1950, plots = 1) #california with plots
+sample_selector(state_number = 5, sample_n = 1600, plots = 1) #colorado with plots
+sample_selector(state_number = 45, sample_n = 2000, plots = 1) #virginia with plots - not functioning at the moment
+#eg wisco, wash, va don't work - mismatched number of rows.
+# to account for this, create empty row in gp
+# difficult to find consistent values across states/samples - at what point do we say good enough?
+
 
 # Reading in & processing of data
 vote_data = read.delim("votingdata.dat") # Read in dataset from .dat file
