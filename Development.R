@@ -28,11 +28,10 @@ sample_selector = function(state_number, sample_n, plots){
   vote_data$stt <- ifelse(vote_data$stt > 12, vote_data$stt - 1, vote_data$stt)
   vote_data$stt <- ifelse(vote_data$stt > 2, vote_data$stt - 1, vote_data$stt) # Recode stt value for states alphabetically after AK
   
-  group = vote_data[vote_data$stt == state_number, 1:9]
-  group = group[,c("rvote", "eth", "sex", "edu")]
-  sample_data = group[sample(1:length(group$stt), sample_n),]
+  state_data = vote_data[vote_data$stt == state_number, c(1,2,3,6,7)]
+  sample_data = state_data[sample(1:length(group$stt), sample_n),]
   
-  gp_output<-gp(formula = rvote~rbf(columns = c("sex", "edu", "eth"), l = c(.5, .1, 3)), data = group, family = binomial)
+  gp_output<-gp(formula = rvote~rbf(columns = c("sex", "edu", "eth"), l = c(.5, .1, 3)), data = state_data, family = binomial)
   gp_predictions<-predict(gp_output, sample_data, type="response") 
   eth = c(rep(1,10), rep(2,10), rep(3,10), rep(4,10))
   sex = c(rep((c(rep(1,5), rep(2,5))), 4))
@@ -51,7 +50,7 @@ sample_selector = function(state_number, sample_n, plots){
   var3 = group$edu
   group$var3 = as.factor(var3)
   
-  glmer_output = glmer(formula = rvote ~ (1|var1) + (1|var2) + (1|var3), data = group, family = binomial) 
+  glmer_output = glmer(formula = rvote ~ (1|var1) + (1|var2) + (1|var3), data = state_data, family = binomial) 
   glmer_predictions = predict(glmer_output, newdata = sample_data, type="response")
   glmer_predictions = as.data.frame(table(glmer_predictions)) 
   glmer_predictions = glmer_predictions[order(glmer_predictions$Freq),] 
