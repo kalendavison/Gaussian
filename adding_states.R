@@ -2,7 +2,7 @@ rm(list = ls())
 setwd("/Users/kalendavison/Desktop/Applied Statistical Programming/GitHub/Gaussian")
 setwd("/Users/noahbardash/Documents/GitHub/Gaussian")
 
-sample_selector = function(state_number, sample_n, plots){ 
+sample_selector = function(state_numbers, sample_n, plots){ 
   vote_data = read.delim("votingdata.dat") # Read in dataset from .dat file
   vote_data = na.exclude(vote_data) # Remove all entries with missing data
   
@@ -11,16 +11,20 @@ sample_selector = function(state_number, sample_n, plots){
   vote_data$stt <- ifelse(vote_data$stt > 2, vote_data$stt - 1, vote_data$stt) # Recode stt value for states alphabetically after AK
   
   
-  group = vote_data[vote_data$stt == state_number, 1:9]
-  sample_data = group[sample(1:length(group$stt), sample_n),]
-  sample_data = sample_data[,c("rvote", "eth", "sex", "edu")]
+  state_numbers = c(20,2,4)
+  group = vote_data[vote_data$stt == state_numbers, 1:9]
+  View(group)
+  sample_data = group[sample(1:length(group$stt), 1000),]
+  sample_data = sample_data[,c("rvote", "stt", "eth", "sex", "edu")]
   
-  gp_output<-gp(formula = rvote~rbf(columns = c("sex", "edu", "eth"), l = c(1.7, .2, 2.9)), data = sample_data, family = binomial)
+  gp_output<-gp(formula = rvote~rbf(columns = c("stt", "sex", "edu", "eth"), l = c(1, 1.7, .2, 2.9)), data = sample_data, family = binomial)
   gp_predictions<-predict(gp_output, sample_data, type="response") 
-  eth = c(rep(1,10), rep(2,10), rep(3,10), rep(4,10))
-  sex = c(rep((c(rep(1,5), rep(2,5))), 4))
-  edu = rep(1:5, 8)
-  fake.dataset = data.frame(eth, sex, edu)
+  eth = rep(c(rep(1,10), rep(2,10), rep(3,10), rep(4,10)),3)
+  sex = rep(c(rep((c(rep(1,5), rep(2,5))), 4)),3)
+  edu = rep(c(rep(1:5, 8)),3)
+  stt = c(rep(state_numbers[1],40),rep(state_numbers[2],40),rep(state_numbers[3],40))
+  fake.dataset = data.frame(stt, eth, sex, edu)
+  View(fake.dataset)
   gp_predict<-predict(gp_output, fake.dataset, type="response") 
   demographic.predictions = data.frame(gp_predict, fake.dataset)
   
@@ -33,8 +37,10 @@ sample_selector = function(state_number, sample_n, plots){
   sample_data$var2 = as.factor(var2)
   var3 = sample_data$edu
   sample_data$var3 = as.factor(var3)
+  var4 = sample_data$stt
+  sample_data$var4 = as.factor(var4)
   
-  glmer_output = glmer(formula = rvote ~ (1|var1) + (1|var2) + (1|var3), data = sample_data, family = binomial) 
+  glmer_output = glmer(formula = rvote ~ (1|var1) + (1|var2) + (1|var3) + (1|var4), data = sample_data, family = binomial) 
   glmer_predictions = predict(glmer_output, newdata = sample_data, type="response")
   glmer_predictions = as.data.frame(table(glmer_predictions)) 
   glmer_predictions = glmer_predictions[order(glmer_predictions$Freq),] 
