@@ -12,40 +12,41 @@ sample_selector = function(state_numbers, sample_n, plots){
   
   
   state_numbers = c(20,2,4)
-  group = vote_data[vote_data$stt == state_numbers, 1:9]
-  View(group)
-  sample_data = group[sample(1:length(group$stt), 1000),]
-  sample_data = sample_data[,c("rvote", "stt", "eth", "sex", "edu")]
+  state_data = vote_data[vote_data$stt == state_numbers, c(1,2,3,6,7)]
+  View(state_data)
+  sample_data = state_data[sample(1:length(state_data$stt), 1000),]
+  sample_data = unique(sample_data[,c("stt", "eth", "sex", "edu")])
   
-  gp_output<-gp(formula = rvote~rbf(columns = c("stt", "sex", "edu", "eth"), l = c(1, 1.7, .2, 2.9)), data = sample_data, family = binomial)
+  gp_output<-gp(formula = rvote~rbf(columns = c("stt", "sex", "edu", "eth"), l = c(1, 1.7, .2, 2.9)), data = state_data, family = binomial)
   gp_predictions<-predict(gp_output, sample_data, type="response") 
-  eth = rep(c(rep(1,10), rep(2,10), rep(3,10), rep(4,10)),3)
-  sex = rep(c(rep((c(rep(1,5), rep(2,5))), 4)),3)
-  edu = rep(c(rep(1:5, 8)),3)
-  stt = c(rep(state_numbers[1],40),rep(state_numbers[2],40),rep(state_numbers[3],40))
-  fake.dataset = data.frame(stt, eth, sex, edu)
-  View(fake.dataset)
-  gp_predict<-predict(gp_output, fake.dataset, type="response") 
-  demographic.predictions = data.frame(gp_predict, fake.dataset)
+  gppred<-as.data.frame(table(gp_predictions))
+  View(gppred)
   
-  gp_predictions = as.data.frame(table(gp_predictions)) 
-  gp_predictions = gp_predictions[order(gp_predictions$Freq),]
+  var1 = state_data$eth
+  state_data$var1 = as.factor(var1)
+  var2 = state_data$sex
+  state_data$var2 = as.factor(var2)
+  var3 = state_data$edu
+  state_data$var3 = as.factor(var3)
+  var4 = state_data$stt
+  state_data$var4 = as.factor(var4)
   
-  var1 = sample_data$eth
-  sample_data$var1 = as.factor(var1)
-  var2 = sample_data$sex
-  sample_data$var2 = as.factor(var2)
-  var3 = sample_data$edu
-  sample_data$var3 = as.factor(var3)
-  var4 = sample_data$stt
-  sample_data$var4 = as.factor(var4)
-  
-  glmer_output = glmer(formula = rvote ~ (1|var1) + (1|var2) + (1|var3) + (1|var4), data = sample_data, family = binomial) 
+  glmer_output = glmer(formula = rvote ~ (1|var1) + (1|var2) + (1|var3) + (1|var4), data = state_data, family = binomial) 
   glmer_predictions = predict(glmer_output, newdata = sample_data, type="response")
   glmer_predictions = as.data.frame(table(glmer_predictions)) 
   glmer_predictions = glmer_predictions[order(glmer_predictions$Freq),] 
+
+  View(gp_predictions)
+  View(glmer_predictions)
+  test <- data.frame(gp_predictions, glmer_predictions)
   
   ordered = demographic.predictions[order(demographic.predictions$gp_predict),] #order gp by fake.dataset to later add to master comparison
+  View(ordered)
+  gppred = data.frame(gp_predictions$gp_predictions)
+  glmerpred = data.frame(glmer_predictions$glmer_predictions)
+  View(gppred)
+  comp = data.frame(gp_predictions$gp_predictions, glmer_predictions$glmer_predictions)
+  View(comp)
   comparison = data.frame(gp_predictions$gp_predictions, glmer_predictions$glmer_predictions, ordered) #to be cleaned to make sense
   comparison = comparison[order(comparison$gp_predictions),] #order by gp_predictions to match methods
   comparison$gp_predictions.gp_predictions = NULL #no longer necessary because added predictions_mass
