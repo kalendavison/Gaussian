@@ -29,8 +29,8 @@ sample_selector = function(state_number, sample_n, plots){
   vote_data$stt <- ifelse(vote_data$stt > 2, vote_data$stt - 1, vote_data$stt) # Recode stt value for states alphabetically after AK
   
   group = vote_data[vote_data$stt == state_number, 1:9]
+  group = group[,c("rvote", "eth", "sex", "edu")]
   sample_data = group[sample(1:length(group$stt), sample_n),]
-  sample_data = sample_data[,c("rvote", "eth", "sex", "edu")]
   
   gp_output<-gp(formula = rvote~rbf(columns = c("sex", "edu", "eth"), l = c(.5, .1, 3)), data = group, family = binomial)
   gp_predictions<-predict(gp_output, sample_data, type="response") 
