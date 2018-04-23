@@ -1,7 +1,5 @@
 rm(list = ls())
 
-
-
 setwd("/Users/kalendavison/Desktop/Applied Statistical Programming/GitHub/Gaussian")
 setwd("/Users/noahbardash/Documents/GitHub/Gaussian")
 
@@ -96,3 +94,8 @@ sample_selector(state_numbers = c(2,4,20), sample_n = 500, plots = 1) #this was 
 sample_selector(state_number = 20, sample_n = 2000, plots = 1) #Mass with plots, returns regression coefficient
 sample_selector(state_number = 2, sample_n = 1700, plots = 1) #Arizona with plots
 sample_selector(state_number = 4, sample_n = 1950, plots = 1) #california with plots
+
+#fix margins in plots
+#write a few paragraphs explaining
+#color points in difference plots by race
+
