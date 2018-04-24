@@ -68,9 +68,7 @@ sample_selector = function(state_numbers, sample_n, plots){
     abline(lm(predictions_table$glmer[predictions_table$sex==2] ~ predictions_table$gp[predictions_table$sex==2]), col="pink")
     legend("topleft", c("Male","Female"), bty="y", pt.bg=c("blue","pink"),
           col=c("blue","pink"), pch = c(21,21), cex = 0.75)
-    fit<-lm(predictions_table$glmer ~ predictions_table$gp)
-    abline(fit, col="black")
-    
+ 
     plot(seq(from = 0, to = 1, by = .05), seq(from = 0, to = 1, by = .05), type = "n", xlab= "GP", ylab = "Glmer", 
          main = "Predictions compared by Education") #by sex
     points(predictions_table$gp[predictions_table$edu == 1], predictions_table$glmer[predictions_table$edu == 1], col = "purple", pch = 19)
@@ -87,10 +85,11 @@ sample_selector = function(state_numbers, sample_n, plots){
            col=c("purple","blue","green","yellow","red"), pch = c(21,21), cex = 0.5)
     
     
-    plot(predictions_table$glmer, predictions_table$difference, main = "Glmer versus difference in predictions", xlab ="Glmer", ylab ="Difference")
+    plot(seq(from = 0, to = 1, by = .05), seq(from = -.5, to = .5, by = .05), main = "Glmer versus difference in predictions", xlab ="Glmer", ylab ="Difference", type = "n")
+    points(predictions_table$glmer[predictions_table$eth == 2], predictions_table$difference[predictions_table$eth == 2], col = "yellow", pch = 16)
+    points(predictions_table$glmer[predictions_table$eth != 2], predictions_table$difference[predictions_table$eth != 2], col = "black", pch = 16)
     
-    fit<-lm(predictions_table$glmer ~ predictions_table$gp) #slope = 0.73
-    abline(fit, col="black")
+    fit<-lm(predictions_table$glmer ~ predictions_table$gp)
     print(fit$coefficients[[2]])
     return(predictions_table) 
   }
