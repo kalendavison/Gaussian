@@ -33,11 +33,6 @@ sample_selector = function(state_numbers, sample_n, plots){
   predictions_table <- data.frame(sample_data, glmer, gp)
   predictions_table$difference =  predictions_table$glmer - as.vector(predictions_table$gp)
   
-  #function2
-  #newdata2<-expand.grid(var1=unique(state_data$var1), var2=unique(state_data$var2),
-  #      var3=unique(state_data$var3), var4=unique(state_data$var4))  
-  #newdata2
-  
   if (plots == 1){
     par(mfrow=c(2,2))
     plot(seq(from = 0, to = .5, by = .0125), seq(from = 0, to = .5, by = .0125), xlab = "GP", ylab = "Glmer", type = "n", 
