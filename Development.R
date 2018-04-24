@@ -58,18 +58,12 @@ sample_selector = function(state_numbers, sample_n, plots){
     points(predictions_table$gp[predictions_table$eth == 4], predictions_table$glmer[predictions_table$eth == 4], col = "black", pch = 19) 
     abline(lm(predictions_table$glmer[predictions_table$eth == 4] ~ predictions_table$gp[predictions_table$eth == 4]), col="black") # slope = -0.03
     
-    fit<-lm(predictions_table$glmer ~ predictions_table$gp) #slope = 0.73
-    abline(fit, col="blue")
-    
     plot(seq(from = 0, to = .5, by = .0125), seq(from = 0, to = .5, by = .0125), type = "n", xlab= "GP", ylab = "Glmer", 
          main = "Predictions compared by Sex") #by sex
     points(predictions_table$gp[predictions_table$sex == 1], predictions_table$glmer[predictions_table$sex == 1], col = "blue", pch = 19)
     abline(lm(predictions_table$glmer[predictions_table$sex==1] ~ predictions_table$gp[predictions_table$sex==1]), col="blue") # slope = 0.55
     points(predictions_table$gp[predictions_table$sex == 2], predictions_table$glmer[predictions_table$sex == 2], col = "pink", pch = 19)
     abline(lm(predictions_table$glmer[predictions_table$sex==2] ~ predictions_table$gp[predictions_table$sex==2]), col="pink") # slope = 0.91
-    
-    fit<-lm(predictions_table$glmer ~ predictions_table$gp) #slope = 0.73
-    abline(fit, col="black")
     
     plot(seq(from = 0, to = .5, by = .0125), seq(from = 0, to = .5, by = .0125), type = "n", xlab= "GP", ylab = "Glmer", 
          main = "Predictions compared by Education") #by sex
@@ -84,10 +78,11 @@ sample_selector = function(state_numbers, sample_n, plots){
     points(predictions_table$gp[predictions_table$edu == 5], predictions_table$glmer[predictions_table$edu == 5], col = "red", pch = 19)
     abline(lm(predictions_table$glmer[predictions_table$edu==5] ~ predictions_table$gp[predictions_table$edu==5]), col="red") # slope = 1.53
     
-    plot(predictions_table$glmer, predictions_table$difference, main = "Glmer versus difference in predictions", xlab ="Glmer", ylab ="Difference")
+    plot(seq(from = 0, to = 1, by = .05), seq(from = -.5, to = .5, by = .05), main = "Glmer versus difference in predictions", xlab ="Glmer", ylab ="Difference", type = "n")
+    points(predictions_table$glmer[predictions_table$eth == 2], predictions_table$difference[predictions_table$eth == 2], col = "yellow", pch = 16)
+    points(predictions_table$glmer[predictions_table$eth != 2], predictions_table$difference[predictions_table$eth != 2], col = "black", pch = 16)
     
-    fit<-lm(predictions_table$glmer ~ predictions_table$gp) #slope = 0.73
-    abline(fit, col="black")
+    fit<-lm(predictions_table$glmer ~ predictions_table$gp)
     print(fit$coefficients[[2]])
     return(predictions_table) 
   }
