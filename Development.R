@@ -84,10 +84,12 @@ sample_selector = function(state_numbers, sample_n, plots){
     legend("topleft", c("No HS","HS Graduate","Some College","College Graduate","Advanced Degree"), bty="y", pt.bg=c("purple","blue","green","yellow","red"),
            col=c("purple","blue","green","yellow","red"), pch = c(21,21), cex = 0.5)
     
-    
     plot(seq(from = 0, to = 1, by = .05), seq(from = -.5, to = .5, by = .05), main = "Glmer versus difference in predictions", xlab ="Glmer", ylab ="Difference", type = "n")
     points(predictions_table$glmer[predictions_table$eth == 2], predictions_table$difference[predictions_table$eth == 2], col = "yellow", pch = 16)
     points(predictions_table$glmer[predictions_table$eth != 2], predictions_table$difference[predictions_table$eth != 2], col = "black", pch = 16)
+    abline(a=0, b=0, col = "black", lwd = 2)
+    legend("topleft", c("African American","Not African American"), bty="y", pt.bg=c("yellow", "black"),
+           col=c("yellow","black"), pch = c(21,21), cex = 0.5)
     
     fit<-lm(predictions_table$glmer ~ predictions_table$gp)
     print(fit$coefficients[[2]])
