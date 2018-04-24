@@ -11,15 +11,13 @@ library(devtools)
 library(arm)
 library(gpe)
 library(lme4)
-?lme4
-?gp
-?display
 
 # Set working directory
 setwd("/Users/kalendavison/Desktop/Applied Statistical Programming/GitHub/Gaussian")
 setwd("/Users/isdav/Documents/GitHub/Gaussian")
 setwd("/Users/noahbardash/Documents/GitHub/Gaussian")
 
+# Master function
 sample_selector = function(state_numbers, sample_n, plots){
   vote_data = read.delim("votingdata.dat") # Read in dataset from .dat file
   vote_data = na.exclude(vote_data) # Remove all entries with missing data
