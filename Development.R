@@ -45,42 +45,47 @@ sample_selector = function(state_numbers, sample_n, plots){
   
   if (plots == 1){
     par(mfrow=c(2,2))
-    plot(seq(from = 0, to = .5, by = .0125), seq(from = 0, to = .5, by = .0125), xlab = "GP", ylab = "Glmer", type = "n", 
+    plot(seq(from = 0, to = 1, by = .05), seq(from = 0, to = 1, by = .05), xlab = "GP", ylab = "Glmer", type = "n", 
          main = "Predictions compared by Ethnicity") #by ethnicity
     points(predictions_table$gp[predictions_table$eth == 1], predictions_table$glmer[predictions_table$eth == 1], col = "red", pch = 19)
-    abline(lm(predictions_table$glmer[predictions_table$eth == 1] ~ predictions_table$gp[predictions_table$eth == 1]), col="red") # slope = 0.09
+    abline(lm(predictions_table$glmer[predictions_table$eth == 1] ~ predictions_table$gp[predictions_table$eth == 1]), col="red")
     points(predictions_table$gp[predictions_table$eth == 2], predictions_table$glmer[predictions_table$eth == 2], col = "yellow", pch = 19)
-    abline(lm(predictions_table$glmer[predictions_table$eth == 2] ~ predictions_table$gp[predictions_table$eth == 2]), col="yellow") # slope = 0.70
+    abline(lm(predictions_table$glmer[predictions_table$eth == 2] ~ predictions_table$gp[predictions_table$eth == 2]), col="yellow")
     points(predictions_table$gp[predictions_table$eth == 3], predictions_table$glmer[predictions_table$eth == 3], col = "green", pch = 19)
-    abline(lm(predictions_table$glmer[predictions_table$eth == 3] ~ predictions_table$gp[predictions_table$eth == 3]), col="green") # slope = 0.85
+    abline(lm(predictions_table$glmer[predictions_table$eth == 3] ~ predictions_table$gp[predictions_table$eth == 3]), col="green")
     points(predictions_table$gp[predictions_table$eth == 4], predictions_table$glmer[predictions_table$eth == 4], col = "black", pch = 19) 
-    abline(lm(predictions_table$glmer[predictions_table$eth == 4] ~ predictions_table$gp[predictions_table$eth == 4]), col="black") # slope = -0.03
-    
-    fit<-lm(predictions_table$glmer ~ predictions_table$gp) #slope = 0.73
+    abline(lm(predictions_table$glmer[predictions_table$eth == 4] ~ predictions_table$gp[predictions_table$eth == 4]), col="black")
+    legend("topleft", c("White","Black","Hispanic","Asian/Pacific Islander"), bty="y", pt.bg=c("red","yellow","green","black"),
+           col=c("red","yellow","green","black"), pch = c(21,21), cex = 0.5)
+    fit<-lm(predictions_table$glmer ~ predictions_table$gp)
     abline(fit, col="blue")
     
-    plot(seq(from = 0, to = .5, by = .0125), seq(from = 0, to = .5, by = .0125), type = "n", xlab= "GP", ylab = "Glmer", 
+    plot(seq(from = 0, to = 1, by = .05), seq(from = 0, to = 1, by = .05), type = "n", xlab= "GP", ylab = "Glmer", 
          main = "Predictions compared by Sex") #by sex
     points(predictions_table$gp[predictions_table$sex == 1], predictions_table$glmer[predictions_table$sex == 1], col = "blue", pch = 19)
-    abline(lm(predictions_table$glmer[predictions_table$sex==1] ~ predictions_table$gp[predictions_table$sex==1]), col="blue") # slope = 0.55
+    abline(lm(predictions_table$glmer[predictions_table$sex==1] ~ predictions_table$gp[predictions_table$sex==1]), col="blue")
     points(predictions_table$gp[predictions_table$sex == 2], predictions_table$glmer[predictions_table$sex == 2], col = "pink", pch = 19)
-    abline(lm(predictions_table$glmer[predictions_table$sex==2] ~ predictions_table$gp[predictions_table$sex==2]), col="pink") # slope = 0.91
-    
-    fit<-lm(predictions_table$glmer ~ predictions_table$gp) #slope = 0.73
+    abline(lm(predictions_table$glmer[predictions_table$sex==2] ~ predictions_table$gp[predictions_table$sex==2]), col="pink")
+    legend("topleft", c("Male","Female"), bty="y", pt.bg=c("blue","pink"),
+          col=c("blue","pink"), pch = c(21,21), cex = 0.75)
+    fit<-lm(predictions_table$glmer ~ predictions_table$gp)
     abline(fit, col="black")
     
-    plot(seq(from = 0, to = .5, by = .0125), seq(from = 0, to = .5, by = .0125), type = "n", xlab= "GP", ylab = "Glmer", 
+    plot(seq(from = 0, to = 1, by = .05), seq(from = 0, to = 1, by = .05), type = "n", xlab= "GP", ylab = "Glmer", 
          main = "Predictions compared by Education") #by sex
     points(predictions_table$gp[predictions_table$edu == 1], predictions_table$glmer[predictions_table$edu == 1], col = "purple", pch = 19)
-    abline(lm(predictions_table$glmer[predictions_table$edu==1] ~ predictions_table$gp[predictions_table$edu==1]), col="purple") # slope = 0.47
+    abline(lm(predictions_table$glmer[predictions_table$edu==1] ~ predictions_table$gp[predictions_table$edu==1]), col="purple")
     points(predictions_table$gp[predictions_table$edu == 2], predictions_table$glmer[predictions_table$edu == 2], col = "blue", pch = 19)
-    abline(lm(predictions_table$glmer[predictions_table$edu==2] ~ predictions_table$gp[predictions_table$edu==2]), col="blue") # slope = 0.75
+    abline(lm(predictions_table$glmer[predictions_table$edu==2] ~ predictions_table$gp[predictions_table$edu==2]), col="blue")
     points(predictions_table$gp[predictions_table$edu == 3], predictions_table$glmer[predictions_table$edu == 3], col = "green", pch = 19)
-    abline(lm(predictions_table$glmer[predictions_table$edu==3] ~ predictions_table$gp[predictions_table$edu==3]), col="green") # slope = 1.07
+    abline(lm(predictions_table$glmer[predictions_table$edu==3] ~ predictions_table$gp[predictions_table$edu==3]), col="green")
     points(predictions_table$gp[predictions_table$edu == 4], predictions_table$glmer[predictions_table$edu == 4], col = "yellow", pch = 19)
-    abline(lm(predictions_table$glmer[predictions_table$edu==4] ~ predictions_table$gp[predictions_table$edu==4]), col="yellow") # slope = 0.65
+    abline(lm(predictions_table$glmer[predictions_table$edu==4] ~ predictions_table$gp[predictions_table$edu==4]), col="yellow")
     points(predictions_table$gp[predictions_table$edu == 5], predictions_table$glmer[predictions_table$edu == 5], col = "red", pch = 19)
-    abline(lm(predictions_table$glmer[predictions_table$edu==5] ~ predictions_table$gp[predictions_table$edu==5]), col="red") # slope = 1.53
+    abline(lm(predictions_table$glmer[predictions_table$edu==5] ~ predictions_table$gp[predictions_table$edu==5]), col="red")
+    legend("topleft", c("No HS","HS Graduate","Some College","College Graduate","Advanced Degree"), bty="y", pt.bg=c("purple","blue","green","yellow","red"),
+           col=c("purple","blue","green","yellow","red"), pch = c(21,21), cex = 0.5)
+    
     
     plot(predictions_table$glmer, predictions_table$difference, main = "Glmer versus difference in predictions", xlab ="Glmer", ylab ="Difference")
     
