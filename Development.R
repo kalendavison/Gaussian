@@ -56,7 +56,7 @@ sample_selector = function(state_numbers, sample_n, plots){
     points(predictions_table$gp[predictions_table$eth == 4], predictions_table$glmer[predictions_table$eth == 4], col = "black", pch = 19) 
     abline(lm(predictions_table$glmer[predictions_table$eth == 4] ~ predictions_table$gp[predictions_table$eth == 4]), col="black")
     legend("topleft", c("White","Black","Hispanic","Asian/Pacific Islander"), bty="y", pt.bg=c("red","yellow","green","black"),
-           col=c("red","yellow","green","black"), pch = c(21,21), cex = 0.5)
+           col=c("red","yellow","green","black"), pch = c(21,21), cex = 0.6)
     fit<-lm(predictions_table$glmer ~ predictions_table$gp)
     abline(fit, col="blue")
     
@@ -82,7 +82,7 @@ sample_selector = function(state_numbers, sample_n, plots){
     points(predictions_table$gp[predictions_table$edu == 5], predictions_table$glmer[predictions_table$edu == 5], col = "red", pch = 19)
     abline(lm(predictions_table$glmer[predictions_table$edu==5] ~ predictions_table$gp[predictions_table$edu==5]), col="red")
     legend("topleft", c("No HS","HS Graduate","Some College","College Graduate","Advanced Degree"), bty="y", pt.bg=c("purple","blue","green","yellow","red"),
-           col=c("purple","blue","green","yellow","red"), pch = c(21,21), cex = 0.5)
+           col=c("purple","blue","green","yellow","red"), pch = c(21,21), cex = 0.6)
     
     
     plot(seq(from = 0, to = 1, by = .05), seq(from = -.5, to = .5, by = .05), main = "Glmer versus difference in predictions", xlab ="Glmer", ylab ="Difference", type = "n")
