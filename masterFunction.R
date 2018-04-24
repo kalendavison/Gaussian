@@ -91,14 +91,8 @@ sample_selector = function(state_numbers, sample_n, plots){
 
 sample_selector(state_numbers = c(1,2,3,5,6,7), sample_n = 500, plots = 1)
 sample_selector(state_numbers = c(2,4,20), sample_n = 500, plots = 1) #this was beautiful
-<<<<<<< HEAD:masterFunction.R
-=======
-sample_selector(state_number = 20, sample_n = 2000, plots = 1) #Mass with plots, returns regression coefficient
-sample_selector(state_number = 2, sample_n = 1700, plots = 1) #Arizona with plots
-sample_selector(state_number = 4, sample_n = 1950, plots = 1) #california with plots
 
 #fix margins in plots
 #write a few paragraphs explaining
 #color points in difference plots by race
->>>>>>> c2f435c551ab2a0f0905acfce66772e641385688:adding_states.R
 
