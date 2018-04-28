@@ -85,7 +85,7 @@ sample_selector = function(state_numbers, sample_n, plots){
     legend("topleft", c("No HS","HS Graduate","Some College","College Graduate","Advanced Degree"), bty="y", pt.bg=c("purple","blue","green","yellow","red"),
            col=c("purple","blue","green","yellow","red"), pch = c(21,21), cex = 0.6)
     
-    plot(seq(from = 0, to = 1, by = .05), seq(from = -.5, to = .5, by = .05), main = "Glmer vsDifference in Predictions", xlab ="Glmer", ylab ="Difference", type = "n")
+    plot(seq(from = 0, to = 1, by = .05), seq(from = -.5, to = .5, by = .05), main = "Glmer vs. Difference in Predictions", xlab ="Glmer", ylab ="Difference", type = "n")
     points(predictions_table$glmer[predictions_table$eth == 2], predictions_table$difference[predictions_table$eth == 2], col = "yellow", pch = 16)
     points(predictions_table$glmer[predictions_table$eth != 2], predictions_table$difference[predictions_table$eth != 2], col = "black", pch = 16)
     abline(a=0, b=0, col = "black", lwd = 2)
@@ -134,7 +134,7 @@ sample_selector_noAA = function(state_numbers, sample_n, plots){
   predictions_table <- data.frame(sample_data, glmer, gp)
   predictions_table$difference =  predictions_table$glmer - as.vector(predictions_table$gp)
   
-  pdf("noAA")
+  jpeg("withoutAA")
   if (plots == 1){
     par(mfrow=c(2,2))
     plot(seq(from = 0, to = 1, by = .05), seq(from = 0, to = 1, by = .05), xlab = "GP", ylab = "Glmer", type = "n", 
@@ -174,7 +174,7 @@ sample_selector_noAA = function(state_numbers, sample_n, plots){
     legend("topleft", c("No HS","HS Graduate","Some College","College Graduate","Advanced Degree"), bty="y", pt.bg=c("purple","blue","green","yellow","red"),
            col=c("purple","blue","green","yellow","red"), pch = c(21,21), cex = 0.6)
     
-    plot(seq(from = 0, to = 1, by = .05), seq(from = -.5, to = .5, by = .05), main = "Glmer vsDifference in Predictions", xlab ="Glmer", ylab ="Difference", type = "n")
+    plot(seq(from = 0, to = 1, by = .05), seq(from = -.5, to = .5, by = .05), main = "Glmer vs. Difference in Predictions", xlab ="Glmer", ylab ="Difference", type = "n")
     points(predictions_table$glmer[predictions_table$eth == 2], predictions_table$difference[predictions_table$eth == 2], col = "yellow", pch = 16)
     points(predictions_table$glmer[predictions_table$eth != 2], predictions_table$difference[predictions_table$eth != 2], col = "black", pch = 16)
     abline(a=0, b=0, col = "black", lwd = 2)
