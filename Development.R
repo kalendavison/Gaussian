@@ -18,15 +18,15 @@ setwd("/Users/isdav/Documents/GitHub/Gaussian")
 setwd("/Users/noahbardash/Documents/GitHub/Gaussian")
 
 # sample_selector takes in three arguments: a vector of state numbers (indexed alphabetically
-#1-49 with AK & HI removed) to be sampled from, sample number (a numeric determining
-#many total samples should be taken out of the population), and plots 
-#(0 will run the analysis with no plots, 1 means with plots). sample_selector, if run
-#with plots=1 (recommended), will return the correlation coefficient, a data frame comparing 
-#the gp predictions to the glmer predictions for each sampled individual, and will save 
+# 1-49 with AK & HI removed) to be sampled from, sample number (a numeric determining
+# many total samples should be taken out of the population), and plots 
+# (0 will run the analysis with no plots, 1 means with plots). sample_selector, if run
+# with plots=1 (recommended), will return the correlation coefficient, a data frame comparing 
+# the gp predictions to the glmer predictions for each sampled individual, and will save 
 # four plots in the working directory, one comparing predictions by education, another 
 # by gender, another by sex, and another showing the difference in glmer and gp predictions 
-#with glmer predictions on the x axis. Plots=0 will just return a data frame of comparisons 
-#by individual sample.
+# with glmer predictions on the x axis. Plots=0 will just return a data frame of comparisons 
+# by individual sample.
 sample_selector = function(state_numbers, sample_n, plots){
   vote_data = read.delim("votingdata.dat") # Read in dataset from .dat file
   vote_data = na.exclude(vote_data) # Remove all entries with missing data
